@@ -1,14 +1,20 @@
-package vn.edu.iuh.fit.week03_lab.backend.responsitories.entities;
+package vn.edu.iuh.fit.week03_lab.backend.repositories.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.Instant;
 
 @Entity
 @Table(name = "product_price")
+@NamedQueries({
+        @NamedQuery(name = "ProductPrice.findAll", query = "select p from ProductPrice p"),
+        @NamedQuery(name = "ProductPrice.findById", query = "select p from ProductPrice p where p.id = :id"),
+        @NamedQuery(name = "ProductPrice.findActivePriceByProductId", query = "select p from ProductPrice p where p.productId = :productId and p.status = 1")
+})
 public class ProductPrice implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +31,8 @@ public class ProductPrice implements Serializable {
     private Integer productId;
 
     @NotNull
-    @ColumnDefault("current_timestamp()")
     @Column(name = "apply_date", nullable = false)
-    private Instant applyDate;
+    private Timestamp applyDate;
 
     @NotNull
     @ColumnDefault("0")
@@ -37,6 +42,10 @@ public class ProductPrice implements Serializable {
     @Lob
     @Column(name = "note")
     private String note;
+
+    @NotNull
+    @Column(name = "status", nullable = false)
+    private Integer status;
 
     public Integer getId() {
         return id;
@@ -62,11 +71,11 @@ public class ProductPrice implements Serializable {
         this.productId = productId;
     }
 
-    public Instant getApplyDate() {
+    public Timestamp getApplyDate() {
         return applyDate;
     }
 
-    public void setApplyDate(Instant applyDate) {
+    public void setApplyDate(Timestamp applyDate) {
         this.applyDate = applyDate;
     }
 
@@ -84,6 +93,14 @@ public class ProductPrice implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
 }

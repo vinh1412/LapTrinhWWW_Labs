@@ -7,7 +7,8 @@
 package vn.edu.iuh.fit.week03_lab.backend.business;
 
 import jakarta.ejb.Remote;
-import vn.edu.iuh.fit.week03_lab.backend.responsitories.entities.Product;
+import vn.edu.iuh.fit.week03_lab.backend.dtos.ProductDTO;
+import vn.edu.iuh.fit.week03_lab.backend.repositories.entities.Product;
 
 import java.util.List;
 
@@ -20,6 +21,6 @@ import java.util.List;
 @Remote
 public interface ProductBeanRemote {
     void add (Product product);
-    List<Product> getAll();
-    Product getById(int id);
+    List<ProductDTO> getAll();
+    ProductDTO getById(int id);
 }

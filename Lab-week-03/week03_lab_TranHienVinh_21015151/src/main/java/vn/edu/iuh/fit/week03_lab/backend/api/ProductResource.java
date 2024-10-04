@@ -5,7 +5,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import vn.edu.iuh.fit.week03_lab.backend.business.ProductBeanRemote;
-import vn.edu.iuh.fit.week03_lab.backend.responsitories.entities.Product;
+import vn.edu.iuh.fit.week03_lab.backend.repositories.entities.Product;
 
 @Path("/products")
 public class ProductResource {
@@ -18,6 +18,8 @@ public class ProductResource {
     }
 
     @GET
+    @Consumes("application/json")
+    @Produces("application/json")
     @Path("/{id}")
     public Response getById(@PathParam("id") int id) {
         return Response.ok(productBean.getById(id)).build();

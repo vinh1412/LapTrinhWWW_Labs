@@ -1,4 +1,4 @@
-package vn.edu.iuh.fit.week03_lab.backend.responsitories.entities;
+package vn.edu.iuh.fit.week03_lab.backend.repositories.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

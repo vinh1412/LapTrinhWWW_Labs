@@ -5,7 +5,7 @@
              version="3.0">
   <persistence-unit name="mariadb">
     <jta-data-source>jdbc/week03_mairadb</jta-data-source>
-    <class>vn.edu.iuh.fit.week03_lab.backend.responsitories.entities.Product</class>
-    <class>vn.edu.iuh.fit.week03_lab.backend.responsitories.entities.ProductPrice</class>
+    <class>vn.edu.iuh.fit.week03_lab.backend.repositories.entities.Product</class>
+    <class>vn.edu.iuh.fit.week03_lab.backend.repositories.entities.ProductPrice</class>
   </persistence-unit>
 </persistence>
