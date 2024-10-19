@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               11.2.0-MariaDB - mariadb.org binary distribution
+-- Server version:               11.2.3-MariaDB - mariadb.org binary distribution
 -- Server OS:                    Win64
--- HeidiSQL Version:             12.3.0.6589
+-- HeidiSQL Version:             12.6.0.6765
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -16,12 +16,10 @@
 
 
 -- Dumping database structure for spring_data_jdbc
-DROP DATABASE IF EXISTS `spring_data_jdbc`;
 CREATE DATABASE IF NOT EXISTS `spring_data_jdbc` /*!40100 DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci */;
 USE `spring_data_jdbc`;
 
 -- Dumping structure for table spring_data_jdbc.candidate
-DROP TABLE IF EXISTS `candidate`;
 CREATE TABLE IF NOT EXISTS `candidate` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `last_name` varchar(50) DEFAULT NULL,
@@ -30,13 +28,16 @@ CREATE TABLE IF NOT EXISTS `candidate` (
   `dob` date DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `phone` varchar(50) DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table spring_data_jdbc.candidate: ~2 rows (approximately)
+INSERT INTO `candidate` (`id`, `last_name`, `middle_name`, `first_name`, `dob`, `email`, `phone`, `address`) VALUES
+	(3, 'Tran', 'Hien ', 'Vinh', '2001-12-11', 'vinh1@gmail.com', '056445566', 'Ho Chi Minh City'),
+	(4, 'Tran', 'Hien ', 'Vinh1', '2001-12-11', 'vinh1@gmail.com', '056445566', 'Ho Chi Minh City1');
 
 -- Dumping structure for table spring_data_jdbc.candidate_skill
-DROP TABLE IF EXISTS `candidate_skill`;
 CREATE TABLE IF NOT EXISTS `candidate_skill` (
   `candidate_id` int(11) NOT NULL,
   `skill_id` int(11) NOT NULL,
@@ -47,20 +48,26 @@ CREATE TABLE IF NOT EXISTS `candidate_skill` (
   CONSTRAINT `FK__skill` FOREIGN KEY (`skill_id`) REFERENCES `skill` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table spring_data_jdbc.candidate_skill: ~5 rows (approximately)
+INSERT INTO `candidate_skill` (`candidate_id`, `skill_id`, `skill_level`) VALUES
+	(3, 2, 1),
+	(3, 3, 4),
+	(3, 7, 5),
+	(4, 4, 3),
+	(4, 7, 5);
 
 -- Dumping structure for table spring_data_jdbc.job
-DROP TABLE IF EXISTS `job`;
 CREATE TABLE IF NOT EXISTS `job` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table spring_data_jdbc.job: ~1 rows (approximately)
+INSERT INTO `job` (`id`, `description`) VALUES
+	(2, 'Java Developer2');
 
 -- Dumping structure for table spring_data_jdbc.job_skill
-DROP TABLE IF EXISTS `job_skill`;
 CREATE TABLE IF NOT EXISTS `job_skill` (
   `job_id` int(11) NOT NULL,
   `skill_id` int(11) NOT NULL,
@@ -71,19 +78,25 @@ CREATE TABLE IF NOT EXISTS `job_skill` (
   CONSTRAINT `FK__skill_1` FOREIGN KEY (`skill_id`) REFERENCES `skill` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table spring_data_jdbc.job_skill: ~0 rows (approximately)
 
 -- Dumping structure for table spring_data_jdbc.skill
-DROP TABLE IF EXISTS `skill`;
 CREATE TABLE IF NOT EXISTS `skill` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `skill_name` varchar(50) DEFAULT NULL,
   `description` varchar(50) DEFAULT NULL,
   `field` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table spring_data_jdbc.skill: ~6 rows (approximately)
+INSERT INTO `skill` (`id`, `skill_name`, `description`, `field`) VALUES
+	(2, 'PHP', 'PHP Developer', 'IT'),
+	(3, 'Java', 'Java Developer', 'IT'),
+	(4, 'JavaScript', 'JavaScript Developer', 'IT'),
+	(5, 'C++', 'C++ Developer', 'IT'),
+	(6, 'C#', 'C# Developer', 'IT'),
+	(7, 'Python', 'Python Developer', 'IT');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
