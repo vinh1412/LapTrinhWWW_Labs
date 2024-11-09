@@ -20,12 +20,12 @@
         </thead>
         <tbody>
         <tr th:each="jobPosting : ${jobPostings}">
-            <td th:text="${jobPosting.jobName}"></td>
-            <td th:text="${jobPosting.jobDesc}"></td>
-            <td th:text="${jobPosting.company.name}"></td>
+            <td th:text="${jobPosting.getJobName()}"></td>
+            <td th:text="${jobPosting.getJobDesc()}"></td>
+            <td th:text="${jobPosting.company.getCompName()}"></td>
             <td>
                 <ul>
-                    <li th:each="jobSkill : ${jobPosting.jobSkills}" th:text="${jobSkill.skill.skillName}"></li>
+                    <li th:each="jobSkill : ${jobPosting.getJobSkills()}" th:text="${jobSkill.skill.getSkillName()}"></li>
                 </ul>
             </td>
         </tr>

@@ -8,10 +8,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import vn.edu.iuh.fit.backend.models.Address;
 import vn.edu.iuh.fit.backend.models.Candidate;
+import vn.edu.iuh.fit.backend.models.Company;
+import vn.edu.iuh.fit.backend.models.Skill;
 import vn.edu.iuh.fit.backend.repositories.AddressRepository;
 import vn.edu.iuh.fit.backend.repositories.CandidateRepository;
+import vn.edu.iuh.fit.backend.repositories.CompanyRepository;
+import vn.edu.iuh.fit.backend.repositories.SkillRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @SpringBootApplication
@@ -24,19 +30,61 @@ public class Week05LabTranHienVinh21015151Application {
 //    private CandidateRepository candidateRepository;
 //    @Autowired
 //    private AddressRepository addressRepository;
+//    @Autowired
+//    private CompanyRepository companyRepository;
+//    @Autowired
+//    private SkillRepository skillRepository;
 //    @Bean
 //    CommandLineRunner initData(){
 //        return args -> {
-//            Random rnd =new Random();
-//            for (int i = 1; i < 1000; i++) {
-//                Address add = new Address("Quang Trung","HCM",CountryCode.VN,
-//                        rnd.nextInt(1,1000)+"",rnd.nextInt(70000,80000)+"");
-//                addressRepository.save(add);
+//            Random rnd = new Random();
+//            List<Long> usedAddressIds = new ArrayList<>();
+//            int maxAddressId = 1000; // Giả sử bạn có 10 địa chỉ trong cơ sở dữ liệu
 //
-//                Candidate can=new Candidate(LocalDate.of(1998,rnd.nextInt(1,13),rnd.nextInt(1,29)),
-//                        "email_"+i+"@gmail.com", "Name #"+i,rnd.nextLong(1111111111L,9999999999L)+"",add);
-//                candidateRepository.save(can);
-//                System.out.println("Added: " +can);
+//            for (int i = 1; i < 100; i++) {
+//                // Tìm một địa chỉ ngẫu nhiên mà chưa được chọn
+//                Long addressId;
+//                Address add;
+//                do {
+//                    addressId = (long) rnd.nextInt(maxAddressId) + 1;
+//                    add = addressRepository.findById(addressId).orElse(null);
+//                } while (add == null || usedAddressIds.contains(addressId));
+//                usedAddressIds.add(addressId);
+//
+//                // Tạo đối tượng Company mới
+//                Company company = new Company();
+//                String companyName = "Company " + i;
+//                String companyEmail = "company" + i + "@gmail.com";
+//
+//                // Kiểm tra xem Company với tên hoặc email đã tồn tại hay chưa
+//                boolean companyExists = companyRepository.existsByCompNameOrEmail(companyName, companyEmail);
+//                if (companyExists) {
+//                    continue; // Nếu tồn tại, bỏ qua vòng lặp này và tạo Company khác
+//                }
+//
+//                // Thiết lập thông tin cho Company
+//                company.setAbout("About company " + i);
+//                company.setAddress(add);
+//                company.setCompName(companyName);
+//                company.setEmail(companyEmail);
+//                company.setPhone("09000000" + i);
+//                company.setWebUrl("http://company" + i + ".com");
+//
+//                // Lưu Company vào cơ sở dữ liệu
+//                companyRepository.save(company);
+//            }
+            // Tạo 10 Skill với ngôn ngữ lập trình
+//            String[] programmingLanguages = {"Java", "Python", "JavaScript", "C++", "C#", "Ruby", "Go", "Swift", "Kotlin", "PHP"};
+//            byte type = 1; // Ví dụ, bạn có thể gán type bằng 1 (hoặc một giá trị khác tùy vào quy ước của bạn)
+//
+//            for (int i = 0; i < programmingLanguages.length; i++) {
+//                Skill skill = new Skill();
+//                skill.setSkillName(programmingLanguages[i]);
+//                skill.setSkillDescription("A programming language used for development of software.");
+//                skill.setType(type);
+//
+//                // Lưu Skill vào cơ sở dữ liệu
+//                skillRepository.save(skill);
 //            }
 //        };
 //    }

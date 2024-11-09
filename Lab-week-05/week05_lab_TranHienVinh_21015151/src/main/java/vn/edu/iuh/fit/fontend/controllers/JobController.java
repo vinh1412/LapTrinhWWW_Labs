@@ -10,9 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import vn.edu.iuh.fit.backend.dtos.JobDTO;
 import vn.edu.iuh.fit.backend.models.Job;
+import vn.edu.iuh.fit.backend.models.JobSkill;
+import vn.edu.iuh.fit.backend.services.CompanyService;
 import vn.edu.iuh.fit.backend.services.JobService;
+import vn.edu.iuh.fit.backend.services.JobSkillService;
+import vn.edu.iuh.fit.backend.services.SkillService;
+
+import java.util.List;
 
 /*
  * @description:
@@ -21,24 +30,38 @@ import vn.edu.iuh.fit.backend.services.JobService;
  * @version:    1.0
  */
 @Controller
+@RequestMapping("/jobs")
 public class JobController {
     @Autowired
     private JobService jobService;
-    @GetMapping("/jobs")
+    @Autowired
+    private SkillService skillService;
+    @Autowired
+    private CompanyService companyService;
+    @Autowired
+    private JobSkillService jobSkillService;
+
+    @GetMapping
     public String showJobPostings(Model model) {
-        model.addAttribute("jobPostings", jobService.findAll());
+        List<Job> jobPostings = jobService.findAll(); // Lấy tất cả công việc
+        for (Job job : jobPostings) {
+            // Fetch danh sách kỹ năng cho mỗi công việc (sử dụng repository hoặc service tương ứng)
+            List<JobSkill> jobSkills = jobSkillService.findByJob(job); // Tìm các JobSkill liên quan đến Job
+            job.setJobSkills(jobSkills); // Giả sử bạn có setter để thêm jobSkills vào job
+        }
+        model.addAttribute("jobPostings", jobPostings);
         return "jobs/list";
     }
-
-    @GetMapping("/jobs/new")
-    public String showJobPostingForm(Model model) {
-        model.addAttribute("jobPosting", new Job());
-        return "jobs/form";
+    @GetMapping("/new")
+    public String showCreateJobForm(Model model) {
+        model.addAttribute("jobDTO", new JobDTO());
+        model.addAttribute("skills", skillService.findAll());
+        model.addAttribute("companies", companyService.findAll());
+        return "jobs/form"; // Trả về trang jobs/create.html
     }
-
-    @PostMapping("/jobs")
-    public String saveJobPosting(Job job) {
-        jobService.save(job);
-        return "redirect:/job-postings";
+    @PostMapping("/save")
+    public String saveJob(@ModelAttribute("jobDTO") JobDTO jobDTO) {
+        jobService.save(jobDTO);
+        return "redirect:/jobs"; // Điều hướng về trang danh sách sau khi lưu
     }
 }
