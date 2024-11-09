@@ -43,11 +43,10 @@ public class JobController {
 
     @GetMapping
     public String showJobPostings(Model model) {
-        List<Job> jobPostings = jobService.findAll(); // Lấy tất cả công việc
+        List<Job> jobPostings = jobService.findAll();
         for (Job job : jobPostings) {
-            // Fetch danh sách kỹ năng cho mỗi công việc (sử dụng repository hoặc service tương ứng)
-            List<JobSkill> jobSkills = jobSkillService.findByJob(job); // Tìm các JobSkill liên quan đến Job
-            job.setJobSkills(jobSkills); // Giả sử bạn có setter để thêm jobSkills vào job
+            List<JobSkill> jobSkills = jobSkillService.findByJob(job);
+            job.setJobSkills(jobSkills);
         }
         model.addAttribute("jobPostings", jobPostings);
         return "jobs/list";
@@ -57,7 +56,7 @@ public class JobController {
         model.addAttribute("jobDTO", new JobDTO());
         model.addAttribute("skills", skillService.findAll());
         model.addAttribute("companies", companyService.findAll());
-        return "jobs/form"; // Trả về trang jobs/create.html
+        return "jobs/form";
     }
     @PostMapping("/save")
     public String saveJob(@ModelAttribute("jobDTO") JobDTO jobDTO) {
