@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import vn.edu.iuh.fit.backend.models.Candidate;
 
+import java.util.Optional;
+
 /*
  * @description:
  * @author: Tran Hien Vinh
@@ -18,5 +20,5 @@ import vn.edu.iuh.fit.backend.models.Candidate;
  */
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
-
+    Optional<Candidate> findByEmail(String email);
 }

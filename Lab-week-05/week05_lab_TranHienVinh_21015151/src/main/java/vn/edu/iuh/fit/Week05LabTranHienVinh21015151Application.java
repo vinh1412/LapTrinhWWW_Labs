@@ -6,14 +6,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import vn.edu.iuh.fit.backend.models.Address;
-import vn.edu.iuh.fit.backend.models.Candidate;
-import vn.edu.iuh.fit.backend.models.Company;
-import vn.edu.iuh.fit.backend.models.Skill;
+import vn.edu.iuh.fit.backend.models.*;
 import vn.edu.iuh.fit.backend.repositories.AddressRepository;
 import vn.edu.iuh.fit.backend.repositories.CandidateRepository;
 import vn.edu.iuh.fit.backend.repositories.CompanyRepository;
 import vn.edu.iuh.fit.backend.repositories.SkillRepository;
+import vn.edu.iuh.fit.backend.services.JobService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -34,6 +32,8 @@ public class Week05LabTranHienVinh21015151Application {
 //    private CompanyRepository companyRepository;
 //    @Autowired
 //    private SkillRepository skillRepository;
+//    @Autowired
+//    private JobService jobService;
 //    @Bean
 //    CommandLineRunner initData(){
 //        return args -> {
@@ -73,9 +73,9 @@ public class Week05LabTranHienVinh21015151Application {
 //                // Lưu Company vào cơ sở dữ liệu
 //                companyRepository.save(company);
 //            }
-            // Tạo 10 Skill với ngôn ngữ lập trình
+////             Tạo 10 Skill với ngôn ngữ lập trình
 //            String[] programmingLanguages = {"Java", "Python", "JavaScript", "C++", "C#", "Ruby", "Go", "Swift", "Kotlin", "PHP"};
-//            byte type = 1; // Ví dụ, bạn có thể gán type bằng 1 (hoặc một giá trị khác tùy vào quy ước của bạn)
+//            byte type = 1;
 //
 //            for (int i = 0; i < programmingLanguages.length; i++) {
 //                Skill skill = new Skill();

@@ -29,4 +29,7 @@ public class CompanyService {
     public Company findById(Long id) {
         return companyRepository.findById(id).orElse(null);
     }
+    public Company findByEmail(String email) {
+        return companyRepository.findByEmail(email).orElse(null);
+    }
 }
