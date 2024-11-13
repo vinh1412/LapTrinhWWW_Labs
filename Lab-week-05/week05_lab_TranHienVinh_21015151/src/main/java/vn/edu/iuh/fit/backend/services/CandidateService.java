@@ -13,7 +13,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import vn.edu.iuh.fit.backend.models.Candidate;
+import vn.edu.iuh.fit.backend.models.Job;
+import vn.edu.iuh.fit.backend.models.JobSkill;
+import vn.edu.iuh.fit.backend.models.Skill;
 import vn.edu.iuh.fit.backend.repositories.CandidateRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * @description:
@@ -22,7 +29,7 @@ import vn.edu.iuh.fit.backend.repositories.CandidateRepository;
  * @version:    1.0
  */
 @Service
-public class CandidateServices {
+public class CandidateService {
     @Autowired
     private CandidateRepository candidateRepository;
 
@@ -33,5 +40,17 @@ public class CandidateServices {
     }
     public Candidate findByEmail(String email) {
         return candidateRepository.findByEmail(email).orElse(null);
+    }
+    public List<Candidate> findCandidatesForJob(Job job) {
+        List<Skill> requiredSkills = new ArrayList<>();
+        // Lấy ra tất cả kỹ năng của công việc
+        for (JobSkill jobSkill : job.getJobSkills()) {
+            requiredSkills.add(jobSkill.getSkill());
+        }
+        return candidateRepository.findCandidatesWithSkills(requiredSkills);
+    }
+
+    public Candidate findById(Long id) {
+        return candidateRepository.findById(id).orElse(null);
     }
 }

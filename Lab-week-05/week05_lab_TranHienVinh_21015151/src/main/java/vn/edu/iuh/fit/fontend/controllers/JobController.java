@@ -18,6 +18,7 @@ import vn.edu.iuh.fit.backend.models.JobSkill;
 import vn.edu.iuh.fit.backend.services.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * @description:
@@ -27,7 +28,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/jobs")
-@SessionAttributes("email")
+//@SessionAttributes("email")
 public class JobController {
     @Autowired
     private JobService jobService;
@@ -38,10 +39,12 @@ public class JobController {
     @Autowired
     private JobSkillService jobSkillService;
     @Autowired
-    private CandidateServices candidateServices;
+    private CandidateService candidateService;
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/list")
-    public String showJobPostings(@ModelAttribute("email") String email, Model model) {
+    public String showJobPostings(@SessionAttribute("email") String email, Model model) {
         Company company = companyService.findByEmail(email);
         List<Job> jobPostings = jobService.findByCompanyWithEmail(email);
         for (Job job : jobPostings) {
@@ -50,21 +53,24 @@ public class JobController {
         }
         model.addAttribute("company", company);
         model.addAttribute("jobPostings", jobPostings);
-        return "jobs/dashboard-company";
+        return "companies/dashboard-company";
     }
 
     @GetMapping("/new")
-    public String showCreateJobForm(Model model) {
-        model.addAttribute("jobDTO", new JobDTO());
+    public String showCreateJobForm(@SessionAttribute("email") String email, Model model) {
+        Company company = companyService.findByEmail(email);
+        JobDTO jobDTO = new JobDTO();
+        jobDTO.setCompanyId(company.getId());
+        model.addAttribute("jobDTO", jobDTO);
         model.addAttribute("skills", skillService.findAll());
-        model.addAttribute("companies", companyService.findAll());
-        return "jobs/form";
+        model.addAttribute("company", company);
+        return "jobs/form-add-job";
     }
 
     @PostMapping("/save")
     public String saveJob(@ModelAttribute("jobDTO") JobDTO jobDTO) {
         jobService.save(jobDTO);
-        return "redirect:/jobs"; // Điều hướng về trang danh sách sau khi lưu
+        return "redirect:/jobs/list"; // Điều hướng về trang danh sách sau khi lưu
     }
 
     @GetMapping("/details/{id}")
@@ -76,39 +82,51 @@ public class JobController {
     }
 
     @GetMapping("/recommendations")
-    public String getJobRecommendations(@ModelAttribute("email") String email, Model model) {
+    public String getJobRecommendations(@SessionAttribute("email") String email, Model model) {
         if (email != null) {
             List<Job> recommendedJobs = jobService.recommendJobsForCandidate(email);
-            Candidate candidate = candidateServices.findByEmail(email);
+            Candidate candidate = candidateService.findByEmail(email);
             model.addAttribute("candidate", candidate);
             model.addAttribute("jobs", recommendedJobs);
             model.addAttribute("email", email);
-            return "jobs/dashboard-candidate"; // Tên của trang Thymeleaf
+            return "candidates/dashboard-candidate";
         } else {
-            return "redirect:/jobs/login";
+            return "redirect:/login";
         }
     }
 
-    // Truy cập trang login
-    @GetMapping("/login")
-    public String login() {
-        return "jobs/login"; // Trang login
+    @GetMapping("/{jobId}/invite")
+    public String showCandidatesForJob(@PathVariable Long jobId, Model model) {
+        Job job = jobService.findById(jobId);
+        List<Candidate> candidates = candidateService.findCandidatesForJob(job);
+        model.addAttribute("job", job);
+        model.addAttribute("candidates", candidates);
+        return "jobs/invite-candidates";
+    }
+    @PostMapping("/{jobId}/inviteCandidate/{candidateId}")
+    public String inviteCandidate(@PathVariable Long jobId, @PathVariable Long candidateId) {
+        Candidate candidate = candidateService.findById(candidateId);
+        if (candidate == null) {
+            throw new RuntimeException("Candidate not found");
+        }
+
+        Job job = jobService.findById(jobId);
+        if (job == null) {
+            throw new RuntimeException("Job not found");
+        }
+
+        String toEmail = candidate.getEmail();
+        String subject = "Job Invitation for " + job.getJobName();
+        String body = "Dear " + candidate.getFullName() + ",\n\n" +
+                "We are excited to invite you to apply for the position of " + job.getJobName() + " at our company. " +
+                "This role requires the following skills: " + job.getJobSkills().stream()
+                .map(skill -> skill.getSkill().getSkillName())
+                .collect(Collectors.joining(", ")) + ".\n\n" +
+                "Please let us know if you're interested.\n\nBest regards,\n" + job.getCompany().getCompName();
+
+        emailService.sendInvitationEmail(toEmail, subject, body);
+
+        return "redirect:/jobs/" + jobId + "/invite";
     }
 
-    @PostMapping("/login")
-    public String login(@RequestParam("email") String email, Model model) {
-        Candidate candidate = candidateServices.findByEmail(email);
-        Company company = companyService.findByEmail(email);
-        if (candidate != null) {
-            model.addAttribute("email", email);
-            return "redirect:/jobs/recommendations";
-        }
-        if (company != null) {
-            model.addAttribute("email", email);
-            return "redirect:/jobs/list";
-        }
-        model.addAttribute("error", "Không tìm thấy ứng viên hoặc công ty với email: " + email);
-        return "jobs/login";
-
-    }
 }

@@ -8,8 +8,10 @@ package vn.edu.iuh.fit.backend.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
+import vn.edu.iuh.fit.backend.models.SkillLevel;
 
 import java.util.List;
+import java.util.Map;
 
 /*
  * @description:
@@ -25,4 +27,5 @@ public class JobDTO {
     private String jobDesc;
     private Long companyId;
     private List<Long> skillIds;
+//    private Map<Long, SkillLevel> skillLevels;
 }

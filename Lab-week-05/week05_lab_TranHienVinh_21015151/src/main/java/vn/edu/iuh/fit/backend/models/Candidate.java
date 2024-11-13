@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -33,6 +36,8 @@ public class Candidate {
     @JoinColumn(name = "address", nullable = false)
     private Address address;
 
+    @OneToMany(mappedBy = "can", fetch = FetchType.LAZY)
+    private List<CandidateSkill> candidateSkills= new ArrayList<>();
     public Candidate(LocalDate dob, String email, String fullName, String phone, Address address) {
         this.dob = dob;
         this.email = email;

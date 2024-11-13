@@ -19,5 +19,4 @@ import java.util.List;
  * @version:    1.0
  */
 public interface CandidateSkillRepository extends JpaRepository<CandidateSkill, Long> {
-    List<CandidateSkill> findByCan(Candidate candidate);
 }

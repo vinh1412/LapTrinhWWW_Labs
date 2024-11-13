@@ -23,5 +23,4 @@ import java.util.List;
 @Repository
 public interface JobSkillRepository extends JpaRepository<JobSkill, Long> {
     List<JobSkill> findByJob(Job job);
-    List<JobSkill> findBySkill(Skill skill);
 }

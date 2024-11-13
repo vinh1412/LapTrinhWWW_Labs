@@ -70,27 +70,6 @@ public class JobService {
         return jobRepository.findById(id).orElse(null);
     }
     public List<Job> recommendJobsForCandidate(String email) {
-        // Lấy ứng viên theo email
-        Candidate candidate = candidateRepository.findByEmail(email).orElse(null);
-
-        // Lấy danh sách kỹ năng của ứng viên
-        List<CandidateSkill> candidateSkills = candidateSkillRepository.findByCan(candidate);
-
-        // Tạo một tập hợp các công việc phù hợp
-        Set<Job> recommendedJobs = new HashSet<>();
-
-        // Duyệt qua từng kỹ năng của ứng viên và tìm các công việc yêu cầu kỹ năng đó
-        for (CandidateSkill candidateSkill : candidateSkills) {
-            Skill skill = candidateSkill.getSkill();
-            List<JobSkill> jobSkills = jobSkillRepository.findBySkill(skill);
-
-            // Thêm công việc vào danh sách gợi ý
-            for (JobSkill jobSkill : jobSkills) {
-                recommendedJobs.add(jobSkill.getJob());
-            }
-        }
-
-        // Chuyển từ Set sang List
-        return new ArrayList<>(recommendedJobs);
+        return jobRepository.findRecommendedJobsForCandidate(email);
     }
 }
