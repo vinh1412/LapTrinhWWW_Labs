@@ -67,4 +67,7 @@ public class JobService {
     public List<Job> recommendJobsForCandidate(String email) {
         return jobRepository.findRecommendedJobsForCandidate(email);
     }
+    public void deleteJobById(Long id) {
+        jobRepository.deleteById(id);
+    }
 }
