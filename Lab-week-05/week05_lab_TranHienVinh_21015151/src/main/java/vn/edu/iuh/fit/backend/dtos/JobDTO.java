@@ -8,10 +8,8 @@ package vn.edu.iuh.fit.backend.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
-import vn.edu.iuh.fit.backend.models.SkillLevel;
 
 import java.util.List;
-import java.util.Map;
 
 /*
  * @description:

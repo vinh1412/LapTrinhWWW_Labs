@@ -8,7 +8,7 @@ package vn.edu.iuh.fit.backend.converters;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import vn.edu.iuh.fit.backend.models.SkillLevel;
+import vn.edu.iuh.fit.backend.enums.SkillLevel;
 
 /*
  * @description:
@@ -26,6 +26,14 @@ public class SkillLevelConverter implements AttributeConverter<SkillLevel, Byte>
 
     @Override
     public SkillLevel convertToEntityAttribute(Byte level) {
-        return (level!=null) ? SkillLevel.fromByte(level) : null;
+        if (level == null) {
+            return null;
+        }
+        for (SkillLevel skillLevel : SkillLevel.values()) {
+            if (skillLevel.getLevel() == level) {
+                return skillLevel;
+            }
+        }
+        throw new IllegalArgumentException("Unknown level: " + level);
     }
 }

@@ -8,6 +8,8 @@ package vn.edu.iuh.fit.fontend.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import vn.edu.iuh.fit.backend.models.Candidate;
 import vn.edu.iuh.fit.backend.models.Company;
+import vn.edu.iuh.fit.backend.models.Job;
 import vn.edu.iuh.fit.backend.services.CandidateService;
 import vn.edu.iuh.fit.backend.services.CompanyService;
+import vn.edu.iuh.fit.backend.services.JobService;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /*
  * @description:
@@ -32,10 +41,12 @@ public class HomeController {
     private CompanyService companyService;
     @Autowired
     private CandidateService candidateService;
-    @GetMapping("/")
-    public String showIndex() {
-        return "index";
-    }
+    @Autowired
+    private JobService jobService;
+//    @GetMapping("/")
+//    public String showIndex() {
+//        return "index";
+//    }
     // Truy cập trang login
     @GetMapping("/login")
     public String login() {
@@ -61,4 +72,39 @@ public class HomeController {
         session.invalidate(); // Hủy session hiện tại
         return "redirect:/login"; // Chuyển hướng tới trang login
     }
+    @GetMapping("/")
+    public String showJobListPaging(Model model,
+                                    @RequestParam("page") Optional<Integer> page,
+                                    @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(12);
+        Page<Job> jobPage= jobService.findAll(
+                currentPage - 1,pageSize,"id","asc");
+        model.addAttribute("jobPage", jobPage);
+        int totalPages = jobPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        return "index";
+    }
+
+    @GetMapping("/search")
+    public String searchJobs(
+            @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            Model model) {
+        Page<Job> jobPage = jobService.searchJobs(search, PageRequest.of(page, size));
+        model.addAttribute("jobPage", jobPage);
+        model.addAttribute("search", search);
+        model.addAttribute("pageNumbers", IntStream.rangeClosed(1, jobPage.getTotalPages())
+                .boxed()
+                .collect(Collectors.toList()));
+        return "index"; // Tên file Thymeleaf của trang
+    }
+
+
 }

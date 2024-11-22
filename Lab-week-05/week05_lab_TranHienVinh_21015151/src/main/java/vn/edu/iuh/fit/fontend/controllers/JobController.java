@@ -10,14 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import vn.edu.iuh.fit.backend.dtos.JobDTO;
-import vn.edu.iuh.fit.backend.models.Candidate;
-import vn.edu.iuh.fit.backend.models.Company;
-import vn.edu.iuh.fit.backend.models.Job;
-import vn.edu.iuh.fit.backend.models.JobSkill;
+import vn.edu.iuh.fit.backend.models.*;
 import vn.edu.iuh.fit.backend.services.*;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*
@@ -43,6 +39,7 @@ public class JobController {
     @Autowired
     private EmailService emailService;
 
+
     @GetMapping("/list")
     public String showJobPostings(@SessionAttribute("email") String email, Model model) {
         Company company = companyService.findByEmail(email);
@@ -59,19 +56,32 @@ public class JobController {
     @GetMapping("/new")
     public String showCreateJobForm(@SessionAttribute("email") String email, Model model) {
         Company company = companyService.findByEmail(email);
-        JobDTO jobDTO = new JobDTO();
-        jobDTO.setCompanyId(company.getId());
-        model.addAttribute("jobDTO", jobDTO);
+        Job job = new Job();
+        job.setCompany(company);
+        job.setJobSkills(new ArrayList<>());
+        model.addAttribute("job", job);
         model.addAttribute("skills", skillService.findAll());
         model.addAttribute("company", company);
         return "jobs/form-add-job";
     }
 
     @PostMapping("/save")
-    public String saveJob(@ModelAttribute("jobDTO") JobDTO jobDTO) {
-        jobService.save(jobDTO);
+    public String saveJob(@ModelAttribute("job") Job job) {
+        if (job.getJobSkills()==null) {
+            job.setJobSkills(new ArrayList<>());
+        }
+        job.getJobSkills().removeIf(jobSkill -> jobSkill.getSkill() == null || jobSkill.getSkillLevel() == null);
+        jobService.save(job);
+        for (JobSkill jobSkill : job.getJobSkills()) {
+            if (jobSkill.getSkill() != null && jobSkill.getSkillLevel() != null) {
+                jobSkill.setJob(job);
+                jobSkill.setMoreInfos("More info");
+                jobSkillService.save(jobSkill);
+            }
+        }
         return "redirect:/jobs/list"; // Điều hướng về trang danh sách sau khi lưu
     }
+
 
     @GetMapping("/details/{id}")
     public String getJobDetails(@PathVariable Long id, Model model) {

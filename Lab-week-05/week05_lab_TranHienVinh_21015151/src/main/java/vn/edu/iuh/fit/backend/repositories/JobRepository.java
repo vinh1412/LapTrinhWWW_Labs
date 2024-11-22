@@ -6,6 +6,8 @@
 
 package vn.edu.iuh.fit.backend.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +30,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
             "SELECT 1 FROM JobSkill js WHERE js.job = j " +
             "AND js.skill IN (SELECT cs.skill FROM CandidateSkill cs WHERE cs.can.email = :email))")
     List<Job> findRecommendedJobsForCandidate(@Param("email") String email);
+
+    Page<Job> findByJobNameContainingIgnoreCaseOrCompany_CompNameContainingIgnoreCaseOrJobSkills_Skill_SkillNameContainingIgnoreCase(
+            String jobName, String companyName, String skillName, Pageable pageable);
 }
