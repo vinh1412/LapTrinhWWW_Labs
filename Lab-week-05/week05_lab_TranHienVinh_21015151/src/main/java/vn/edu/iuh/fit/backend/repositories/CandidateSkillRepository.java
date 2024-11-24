@@ -9,6 +9,7 @@ package vn.edu.iuh.fit.backend.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import vn.edu.iuh.fit.backend.models.Candidate;
 import vn.edu.iuh.fit.backend.models.CandidateSkill;
+import vn.edu.iuh.fit.backend.models.CandidateSkillId;
 
 import java.util.List;
 
@@ -18,5 +19,6 @@ import java.util.List;
  * @date:   12/11/2024
  * @version:    1.0
  */
-public interface CandidateSkillRepository extends JpaRepository<CandidateSkill, Long> {
+public interface CandidateSkillRepository extends JpaRepository<CandidateSkill, CandidateSkillId> {
+
 }

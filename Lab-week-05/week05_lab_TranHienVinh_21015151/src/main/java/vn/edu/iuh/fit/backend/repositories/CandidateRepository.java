@@ -28,4 +28,6 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
     // Tìm các ứng viên có ít nhất một trong các kỹ năng được truyền vào
     @Query("SELECT c FROM Candidate c JOIN c.candidateSkills cs WHERE cs.skill IN :skills")
     List<Candidate> findCandidatesWithSkills(@Param("skills") List<Skill> skills);
+    boolean existsByPhone(String phone);
+    boolean existsByEmail(String email);
 }

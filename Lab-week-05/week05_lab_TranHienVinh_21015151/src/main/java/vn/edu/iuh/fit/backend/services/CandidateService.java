@@ -12,11 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import vn.edu.iuh.fit.backend.models.Candidate;
-import vn.edu.iuh.fit.backend.models.Job;
-import vn.edu.iuh.fit.backend.models.JobSkill;
-import vn.edu.iuh.fit.backend.models.Skill;
-import vn.edu.iuh.fit.backend.repositories.CandidateRepository;
+import vn.edu.iuh.fit.backend.models.*;
+import vn.edu.iuh.fit.backend.repositories.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +29,14 @@ import java.util.stream.Collectors;
 public class CandidateService {
     @Autowired
     private CandidateRepository candidateRepository;
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
+    private SkillRepository skillRepository;
+    @Autowired
+    private ExperienceRepository experienceRepository;
+    @Autowired
+    private CandidateSkillRepository candidateSkillRepository;
 
     public Page<Candidate> findAll(int pageNo, int pageSize, String sortBy, String sortDirection) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
@@ -53,4 +58,34 @@ public class CandidateService {
     public Candidate findById(Long id) {
         return candidateRepository.findById(id).orElse(null);
     }
+    public boolean existsByPhone(String phone) {
+        return candidateRepository.existsByPhone(phone);
+    }
+    public boolean existsByEmail(String email) {
+        return candidateRepository.existsByEmail(email);
+    }
+    public void saveCandidate(Candidate candidate) {
+        Address address = candidate.getAddress();
+        addressRepository.save(address);
+
+        candidateRepository.save(candidate);
+
+        for (CandidateSkill candidateSkill : candidate.getCandidateSkills()) {
+            Skill skill = candidateSkill.getSkill();
+
+            if (skill.getId() == null || !skillRepository.existsById(skill.getId())) {
+                skillRepository.save(skill);
+            }
+
+            candidateSkill.setCan(candidate);
+            candidateSkill.setSkill(skill);
+            candidateSkillRepository.save(candidateSkill);
+        }
+
+        for (Experience experience : candidate.getExperiences()) {
+            experience.setCandidate(candidate);
+            experienceRepository.save(experience);
+        }
+    }
+
 }

@@ -44,8 +44,8 @@
             <td>
                 <a th:href="@{'/jobs/' + ${jobPosting.getId()} + '/invite'}" class="btn btn-primary">Find candidates</a>
                 <a th:href="@{'/jobs/' + ${jobPosting.getId()} + '/edit'}" class="btn btn-primary">Edit</a>
-                <form th:action="@{'/jobs/' + ${jobPosting.getId()} + '/delete'}" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this job?');">Delete</button>
+                <form th:action="@{'/jobs/' + ${jobPosting.getId()} + '/delete'}" method="post" style="display: inline">
+                    <button type="submit" class="btn btn-danger mt-1" onclick="return confirm('Are you sure you want to delete this job?');">Delete</button>
                 </form>
             </td>
         </tr>

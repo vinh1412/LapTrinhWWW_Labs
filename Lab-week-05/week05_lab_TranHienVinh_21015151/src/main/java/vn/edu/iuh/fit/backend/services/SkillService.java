@@ -41,4 +41,10 @@ public class SkillService {
         Pageable pageable = PageRequest.of(0, 5);  // Lấy tối đa 5 kỹ năng
         return skillRepository.findSkillsNotInCandidateSkills(candidateId, pageable);
     }
+    public void save(Skill skill) {
+        skillRepository.save(skill);
+    }
+    public Skill findBySkillName(String skillName) {
+        return skillRepository.findBySkillName(skillName);
+    }
 }

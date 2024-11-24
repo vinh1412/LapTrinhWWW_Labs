@@ -7,6 +7,10 @@
 </head>
 <body class="bg-light">
 <div class="container mt-5">
+    <!-- Hiển thị thông báo thành công nếu có -->
+    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+        <p th:text="${successMessage}"></p>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
