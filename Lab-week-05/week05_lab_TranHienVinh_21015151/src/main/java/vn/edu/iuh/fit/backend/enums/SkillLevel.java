@@ -17,13 +17,4 @@ public enum SkillLevel {
     public byte getLevel() {
         return level;
     }
-
-//    public static SkillLevel fromByte(byte level) {
-//        for (SkillLevel skillLevel : SkillLevel.values()) {
-//            if (skillLevel.getLevel() == level) {
-//                return skillLevel;
-//            }
-//        }
-//        throw new IllegalArgumentException("Unknown level: " + level);
-//    }
 }

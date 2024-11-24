@@ -68,7 +68,7 @@ public class JobController {
 
     @PostMapping("/save")
     public String saveJob(@ModelAttribute("job") Job job) {
-        if (job.getJobSkills()==null) {
+        if (job.getJobSkills() == null) {
             job.setJobSkills(new ArrayList<>());
         }
         job.getJobSkills().removeIf(jobSkill -> jobSkill.getSkill() == null || jobSkill.getSkillLevel() == null);
@@ -76,7 +76,6 @@ public class JobController {
         for (JobSkill jobSkill : job.getJobSkills()) {
             if (jobSkill.getSkill() != null && jobSkill.getSkillLevel() != null) {
                 jobSkill.setJob(job);
-                jobSkill.setMoreInfos("More info");
                 jobSkillService.save(jobSkill);
             }
         }
@@ -114,6 +113,7 @@ public class JobController {
         model.addAttribute("candidates", candidates);
         return "jobs/invite-candidates";
     }
+
     @PostMapping("/{jobId}/inviteCandidate/{candidateId}")
     public String inviteCandidate(@PathVariable Long jobId, @PathVariable Long candidateId) {
         Candidate candidate = candidateService.findById(candidateId);
@@ -149,6 +149,72 @@ public class JobController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete job.");
         }
+        return "redirect:/jobs/list";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        // Tìm kiếm công việc theo ID
+        Job job = jobService.findById(id);
+        List<Skill> skills = skillService.findAll();
+        System.out.println("jobSkills:");
+        for (JobSkill jobSkill : job.getJobSkills()) {
+            System.out.println("  JobSkill ID: " + jobSkill.getSkill().getId() + ", Skill Name: " + jobSkill.getSkill().getSkillName());
+        }
+
+        System.out.println("skills:");
+        for (Skill skill : skills) {
+            System.out.println("  Skill ID: " + skill.getId() + ", Skill Name: " + skill.getSkillName());
+        }
+        if (job != null) {
+            if (job.getJobSkills() == null) {
+                job.setJobSkills(new ArrayList<>());
+            }
+            List<Long> selectedSkillIds = job.getJobSkills().stream()
+                    .map(jobSkill -> jobSkill.getSkill().getId())
+                    .collect(Collectors.toList());
+            model.addAttribute("selectedSkillIds", selectedSkillIds);
+            model.addAttribute("job", job);
+            model.addAttribute("skills", skills);
+            return "jobs/form-edit-job";
+        } else {
+            return "redirect:/jobs/list";
+        }
+    }
+
+    @PostMapping("/{id}/edit")
+    public String updateJob(@PathVariable("id") Long id, @ModelAttribute("job") Job job, RedirectAttributes redirectAttributes) {
+        // Tìm job theo id và kiểm tra xem có tồn tại hay không
+        Job existingJob = jobService.findById(id); // Giả sử jobService có phương thức này
+
+        if (existingJob == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Job not found!");
+            return "redirect:/jobs/list";
+        }
+
+        // Cập nhật các thuộc tính của job
+        existingJob.setJobName(job.getJobName());
+        existingJob.setJobDesc(job.getJobDesc());
+        existingJob.setCompany(job.getCompany());
+        // Các thuộc tính khác của Job...
+
+        // Nếu jobSkills là null, khởi tạo mới
+        if (job.getJobSkills() == null) {
+            job.setJobSkills(new ArrayList<>());
+        }
+
+        // Xử lý jobSkills
+        job.getJobSkills().removeIf(jobSkill -> jobSkill.getSkill() == null || jobSkill.getSkillLevel() == null);
+        for (JobSkill jobSkill : job.getJobSkills()) {
+            if (jobSkill.getSkill() != null && jobSkill.getSkillLevel() != null) {
+                jobSkill.setJob(existingJob); // Liên kết JobSkill với Job
+                jobSkillService.save(jobSkill); // Lưu JobSkill
+            }
+        }
+
+        // Lưu lại job sau khi cập nhật
+        jobService.save(existingJob);
+        redirectAttributes.addFlashAttribute("successMessage", "Job updated successfully!");
         return "redirect:/jobs/list";
     }
 }
