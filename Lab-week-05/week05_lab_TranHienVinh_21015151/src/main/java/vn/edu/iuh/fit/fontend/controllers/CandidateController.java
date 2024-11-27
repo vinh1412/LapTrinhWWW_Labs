@@ -11,17 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.iuh.fit.backend.enums.SkillType;
 import vn.edu.iuh.fit.backend.models.*;
 import vn.edu.iuh.fit.backend.repositories.CandidateRepository;
+import vn.edu.iuh.fit.backend.repositories.CandidateSkillRepository;
+import vn.edu.iuh.fit.backend.repositories.ExperienceRepository;
 import vn.edu.iuh.fit.backend.services.CandidateService;
 import vn.edu.iuh.fit.backend.services.SkillService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,20 +42,26 @@ public class CandidateController {
     private CandidateService candidateService;
     @Autowired
     private SkillService skillService;
+    @Autowired
+    private ExperienceRepository experienceRepository;
+    @Autowired
+    private CandidateSkillRepository candidateSkillRepository;
 
+    // Hiển thị danh sách ứng viên
     @GetMapping("/list")
     public String showCandidateList(Model model) {
         model.addAttribute("candidates", candidateRepository.findAll());
         return "candidates/candidates";
     }
+    // Hiển thị danh sách ứng viên theo trang
     @GetMapping("/candidates")
     public String showCandidateListPaging(Model model,
                                           @RequestParam("page") Optional<Integer> page,
                                           @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
-        Page<Candidate> candidatePage= candidateService.findAll(
-                currentPage - 1,pageSize,"id","asc");
+        Page<Candidate> candidatePage = candidateService.findAll(
+                currentPage - 1, pageSize, "id", "asc");
         model.addAttribute("candidatePage", candidatePage);
         int totalPages = candidatePage.getTotalPages();
         if (totalPages > 0) {
@@ -66,6 +72,8 @@ public class CandidateController {
         }
         return "candidates/candidates-paging";
     }
+
+    // Hiển thị trang đăng ký ứng viên
     @GetMapping("/signup")
     public String signupForm(Model model) {
         List<CountryCode> countries = List.of(CountryCode.values());
@@ -76,6 +84,7 @@ public class CandidateController {
         return "home/signup";
     }
 
+    // Xử lý đăng ký ứng viên
     @PostMapping("/signup")
     public String createCandidate(@ModelAttribute Candidate candidate,
                                   @RequestParam List<Long> skillIds,
@@ -138,7 +147,7 @@ public class CandidateController {
             }
         }
 
-        // Lặp qua các kỹ năng đã có trong form và lưu chúng
+        // Lặp qua các kỹ năng đã có trong form và lưu
         for (int i = 0; i < skillIds.size(); i++) {
             Long skillId = skillIds.get(i);
             Byte skillLevel = skillLevels.get(i);
@@ -163,6 +172,154 @@ public class CandidateController {
         return "redirect:/login";
     }
 
+    // Hiển thị trang cập nhật ứng viên
+    @GetMapping("/edit/{id}")
+    public String editCandidateForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Candidate candidate = candidateService.findById(id);
+        if (candidate == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Candidate not found!");
+            return "redirect:/candidates"; // Hoặc trang phù hợp nếu Candidate không tồn tại
+        }
+
+        List<CountryCode> countries = List.of(CountryCode.values());
+        List<Experience> experiences = candidate.getExperiences();
+        if (experiences.isEmpty()) {
+            experiences.add(new Experience()); // Thêm một bản ghi rỗng
+        }
+        List<Skill> skills = skillService.findAll();
+
+        model.addAttribute("candidate", candidate);
+        model.addAttribute("countries", countries);
+        model.addAttribute("skills", skills);
+
+        return "candidates/edit-candidate"; // Trang HTML để chỉnh sửa
+    }
+
+    // Xử lý cập nhật ứng viên
+    @PostMapping("/edit/{id}")
+    public String updateCandidate(
+            @PathVariable Long id,
+            @ModelAttribute Candidate updatedCandidate,
+            @RequestParam(required = false) List<Long> skillIds,
+            @RequestParam(required = false) List<Byte> skillLevels,
+            @RequestParam(required = false) List<String> newSkillNames,
+            @RequestParam(required = false) List<Byte> newSkillLevels,
+            RedirectAttributes redirectAttributes) {
+
+        Candidate existingCandidate = candidateService.findById(id);
+        if (existingCandidate == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Candidate not found!");
+            return "redirect:/candidates";
+        }
+
+        // Cập nhật thông tin cơ bản
+        existingCandidate.setFullName(updatedCandidate.getFullName());
+        existingCandidate.setDob(updatedCandidate.getDob());
+        existingCandidate.setEmail(updatedCandidate.getEmail());
+        existingCandidate.setPhone(updatedCandidate.getPhone());
+
+        // Cập nhật địa chỉ
+        Address address = existingCandidate.getAddress();
+        address.setStreet(updatedCandidate.getAddress().getStreet());
+        address.setNumber(updatedCandidate.getAddress().getNumber());
+        address.setCity(updatedCandidate.getAddress().getCity());
+        address.setZipcode(updatedCandidate.getAddress().getZipcode());
+        address.setCountry(updatedCandidate.getAddress().getCountry());
 
 
+        // Cập nhật kỹ năng đã chọn (nếu có)
+        if (skillIds != null && !skillIds.isEmpty()) {
+            for (int i = 0; i < skillIds.size(); i++) {
+                Long skillId = skillIds.get(i);
+                Byte skillLevel = skillLevels.get(i);
+                Skill skill = skillService.findById(skillId);
+
+                // Tìm kỹ năng của ứng viên và cập nhật mức độ
+                CandidateSkill existingCandidateSkill = candidateSkillRepository.findByCanIdAndSkillId(existingCandidate.getId(), skill.getId());
+
+                if (existingCandidateSkill != null) {
+                    existingCandidateSkill.setSkillLevel(skillLevel);
+                    candidateSkillRepository.save(existingCandidateSkill); // Lưu lại thay đổi
+                } else {
+                    // Nếu không tìm thấy, thêm kỹ năng mới vào
+                    CandidateSkill candidateSkill = new CandidateSkill();
+                    CandidateSkillId candidateSkillId = new CandidateSkillId();
+                    candidateSkillId.setCanId(existingCandidate.getId());
+                    candidateSkillId.setSkillId(skill.getId());
+                    candidateSkill.setId(candidateSkillId);
+                    candidateSkill.setCan(existingCandidate);
+                    candidateSkill.setSkill(skill);
+                    candidateSkill.setSkillLevel(skillLevel);
+
+                    existingCandidate.getCandidateSkills().add(candidateSkill);
+                }
+            }
+        }
+
+        // Thêm các kỹ năng mới (nếu có)
+        if (newSkillNames != null && !newSkillNames.isEmpty()) {
+            for (int i = 0; i < newSkillNames.size(); i++) {
+                String skillName = newSkillNames.get(i);
+                Byte skillLevel = (newSkillLevels != null && newSkillLevels.size() > i) ? newSkillLevels.get(i) : 1;
+
+                // Kiểm tra xem kỹ năng đã tồn tại chưa, nếu chưa thì thêm mới
+                Skill newSkill = skillService.findBySkillName(skillName.trim());
+                if (newSkill == null) {
+                    newSkill = new Skill();
+                    newSkill.setSkillName(skillName);
+                    skillService.save(newSkill); // Lưu kỹ năng mới vào DB
+                }
+
+                // Tạo và thêm mới vào danh sách kỹ năng của ứng viên
+                CandidateSkill candidateSkill = new CandidateSkill();
+                CandidateSkillId candidateSkillId = new CandidateSkillId();
+                candidateSkillId.setCanId(existingCandidate.getId());
+                candidateSkillId.setSkillId(newSkill.getId());
+                candidateSkill.setId(candidateSkillId);
+                candidateSkill.setCan(existingCandidate);
+                candidateSkill.setSkill(newSkill);
+                candidateSkill.setSkillLevel(skillLevel);
+
+                // Log trước khi thêm kỹ năng vào danh sách
+                System.out.println("Before adding new skill: " + existingCandidate.getCandidateSkills());
+
+                // Thêm kỹ năng mới vào danh sách kỹ năng của ứng viên
+                existingCandidate.getCandidateSkills().add(candidateSkill);
+
+                // Log sau khi thêm kỹ năng vào danh sách
+                System.out.println("After adding new skill: " + existingCandidate.getCandidateSkills());
+            }
+        }
+        // Cập nhật danh sách kinh nghiệm
+        List<Experience> updatedExperiences = updatedCandidate.getExperiences();
+        List<Experience> existingExperiences = existingCandidate.getExperiences();
+
+        for (int i = 0; i < updatedExperiences.size(); i++) {
+            Experience updatedExperience = updatedExperiences.get(i);
+
+            // Kiểm tra xem kinh nghiệm đã tồn tại chưa
+            Experience existingExperience = (i < existingExperiences.size()) ? existingExperiences.get(i) : null;
+
+            if (existingExperience == null) {
+                // Nếu chưa tồn tại, tạo mới
+                existingExperience = new Experience();
+                existingExperiences.add(existingExperience);
+            }
+
+            // Cập nhật thông tin kinh nghiệm
+            existingExperience.setCompanyName(updatedExperience.getCompanyName());
+            existingExperience.setRole(updatedExperience.getRole());
+            existingExperience.setFromDate(updatedExperience.getFromDate());
+            existingExperience.setToDate(updatedExperience.getToDate());
+            existingExperience.setWorkDescription(updatedExperience.getWorkDescription());
+            existingExperience.setCandidate(existingCandidate);
+
+            experienceRepository.save(existingExperience);
+        }
+
+        candidateService.saveCandidate(existingCandidate);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Candidate updated successfully!");
+        return "redirect:/jobs/recommendations"; // Quay lại trang gợi ý công việc
+    }
 }
