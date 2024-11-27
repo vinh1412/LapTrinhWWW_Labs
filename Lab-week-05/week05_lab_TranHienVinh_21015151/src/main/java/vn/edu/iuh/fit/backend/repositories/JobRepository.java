@@ -24,13 +24,16 @@ import java.util.List;
  */
 @Repository
 public interface JobRepository extends JpaRepository<Job, Long> {
+    // Tìm công việc theo email của công ty
     List<Job> findJobsByCompany_Email(String email);
-    // Tìm các kỹ năng mà ứng viên có dựa trên email, sau đó tìm các công việc mà có ít nhất một trong các kỹ năng đó, trả về danh sách các công việc
+    // Tìm các kỹ năng mà ứng viên có dựa trên email,
+    // sau đó tìm các công việc mà có ít nhất một trong các kỹ năng đó,
+    // trả về danh sách các công việc
     @Query("SELECT j FROM Job j WHERE EXISTS (" +
             "SELECT 1 FROM JobSkill js WHERE js.job = j " +
             "AND js.skill IN (SELECT cs.skill FROM CandidateSkill cs WHERE cs.can.email = :email))")
     List<Job> findRecommendedJobsForCandidate(@Param("email") String email);
-
+    // Tìm các công việc theo tên công việc, tên công ty hoặc tên kỹ năng
     Page<Job> findByJobNameContainingIgnoreCaseOrCompany_CompNameContainingIgnoreCaseOrJobSkills_Skill_SkillNameContainingIgnoreCase(
             String jobName, String companyName, String skillName, Pageable pageable);
 }

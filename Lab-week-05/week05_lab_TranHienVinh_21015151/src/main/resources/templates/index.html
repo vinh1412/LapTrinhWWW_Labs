@@ -87,7 +87,7 @@
     <div class="container mt-5">
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
-                <!-- Phần phân trang - nút "Previous" (Lùi lại) -->
+                <!-- Phần phân trang - nút "Previous" -->
                 <li class="page-item" th:classappend="${jobPage.hasPrevious()} ? '' : 'disabled'">
                     <a class="page-link"
                        th:href="@{/search(size=${jobPage.size}, page=${jobPage.number - 1}, search=${search})}"
@@ -103,7 +103,7 @@
                        th:text="${pageNumber}"></a>
                 </li>
 
-                <!-- Phần phân trang - nút "Next" (Tiếp theo) -->
+                <!-- Phần phân trang - nút "Next" -->
                 <li class="page-item" th:classappend="${jobPage.hasNext()} ? '' : 'disabled'">
                     <a class="page-link"
                        th:href="@{/search(size=${jobPage.size}, page=${jobPage.number + 1}, search=${search})}"

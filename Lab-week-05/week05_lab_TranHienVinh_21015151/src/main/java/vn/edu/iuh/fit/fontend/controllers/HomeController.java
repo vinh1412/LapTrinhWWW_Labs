@@ -43,15 +43,12 @@ public class HomeController {
     private CandidateService candidateService;
     @Autowired
     private JobService jobService;
-//    @GetMapping("/")
-//    public String showIndex() {
-//        return "index";
-//    }
     // Truy cập trang login
     @GetMapping("/login")
     public String login() {
         return "home/login"; // Trang login
     }
+    // Xử lý đăng nhập
     @PostMapping("/login")
     public String login(@RequestParam("email") String email, Model model) {
         Candidate candidate = candidateService.findByEmail(email);
@@ -67,11 +64,13 @@ public class HomeController {
         model.addAttribute("error", "Không tìm thấy ứng viên hoặc công ty với email: " + email);
         return "home/login"; // Trang login
     }
+    // Xử lý đăng xuất
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // Hủy session hiện tại
         return "redirect:/login"; // Chuyển hướng tới trang login
     }
+    // Truy cập trang đăng ký
     @GetMapping("/")
     public String showJobListPaging(Model model,
                                     @RequestParam("page") Optional<Integer> page,
@@ -91,6 +90,7 @@ public class HomeController {
         return "index";
     }
 
+    // Tìm kiếm công việc theo tên công việc hoặc tên công ty hoặc kỹ năng
     @GetMapping("/search")
     public String searchJobs(
             @RequestParam(required = false) String search,
@@ -100,10 +100,10 @@ public class HomeController {
         Page<Job> jobPage = jobService.searchJobs(search, PageRequest.of(page, size));
         model.addAttribute("jobPage", jobPage);
         model.addAttribute("search", search);
-        model.addAttribute("pageNumbers", IntStream.rangeClosed(1, jobPage.getTotalPages())
-                .boxed()
-                .collect(Collectors.toList()));
-        return "index"; // Tên file Thymeleaf của trang
+        model.addAttribute("pageNumbers", IntStream.rangeClosed(1, jobPage.getTotalPages())// tạo ra một chuỗi số từ 1 đến tổng số trang
+                .boxed() // chuyển từ IntStream sang Stream<Integer>
+                .collect(Collectors.toList())); // chuyển Stream<Integer> thành List<Integer>
+        return "index";
     }
 
 

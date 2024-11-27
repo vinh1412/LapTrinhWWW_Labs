@@ -9,7 +9,7 @@
 <div class="container mt-5">
     <div class="text-center mb-4">
         <h1>Welcome, <span th:text="${candidate.fullName}">Candidate</span></h1>
-        <button class="btn btn-primary">Edit Profile</button>
+        <a class="btn btn-primary" th:href="@{/edit/{id}(id=${candidate.id})}">Edit Profile</a>
         <a class="btn btn-primary"
            th:href="@{/skills/recommend/{candidateId}(candidateId=${candidate.id})}">
             Skill Recommendations

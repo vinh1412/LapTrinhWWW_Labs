@@ -22,5 +22,6 @@ import java.util.List;
  */
 @Repository
 public interface JobSkillRepository extends JpaRepository<JobSkill, Long> {
+    // Tim cac ky nang cua cong viec theo cong viec
     List<JobSkill> findByJob(Job job);
 }

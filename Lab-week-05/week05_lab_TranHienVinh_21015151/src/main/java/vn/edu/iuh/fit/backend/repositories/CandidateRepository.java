@@ -24,10 +24,13 @@ import java.util.Optional;
  */
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
+    // Tìm ứng viên theo email
     Optional<Candidate> findByEmail(String email);
     // Tìm các ứng viên có ít nhất một trong các kỹ năng được truyền vào
     @Query("SELECT c FROM Candidate c JOIN c.candidateSkills cs WHERE cs.skill IN :skills")
     List<Candidate> findCandidatesWithSkills(@Param("skills") List<Skill> skills);
+    // Kiểm tra số điện thoại đã tồn tại chưa
     boolean existsByPhone(String phone);
+    // Kiểm tra email đã tồn tại chưa
     boolean existsByEmail(String email);
 }

@@ -40,7 +40,7 @@ public class JobController {
     @Autowired
     private EmailService emailService;
 
-
+    // Hiển thị danh sách công việc của công ty
     @GetMapping("/list")
     public String showJobPostings(@SessionAttribute("email") String email, Model model) {
         Company company = companyService.findByEmail(email);
@@ -53,7 +53,7 @@ public class JobController {
         model.addAttribute("jobPostings", jobPostings);
         return "companies/dashboard-company";
     }
-
+    // Hiển thị form tạo mới công việc
     @GetMapping("/new")
     public String showCreateJobForm(@SessionAttribute("email") String email, Model model) {
         Company company = companyService.findByEmail(email);
@@ -65,7 +65,7 @@ public class JobController {
         model.addAttribute("company", company);
         return "jobs/form-add-job";
     }
-
+    // Lưu công việc mới
     @PostMapping("/save")
     public String saveJob(@ModelAttribute("job") Job job) {
         if (job.getJobSkills() == null) {
@@ -79,10 +79,10 @@ public class JobController {
                 jobSkillService.save(jobSkill);
             }
         }
-        return "redirect:/jobs/list"; // Điều hướng về trang danh sách sau khi lưu
+        return "redirect:/jobs/list"; // Chuyển hướng tới trang danh sách công việc
     }
 
-
+    // Hiển thị chi tiết công việc
     @GetMapping("/details/{id}")
     public String getJobDetails(@PathVariable Long id, Model model) {
         Job job = jobService.findById(id);
@@ -91,6 +91,7 @@ public class JobController {
         return "jobs/job-details";
     }
 
+    // Hiển thị danh sách công việc được đề xuất cho ứng viên
     @GetMapping("/recommendations")
     public String getJobRecommendations(@SessionAttribute("email") String email, Model model) {
         if (email != null) {
@@ -105,6 +106,7 @@ public class JobController {
         }
     }
 
+    // Hiển thị form mời ứng viên ứng tuyển
     @GetMapping("/{jobId}/invite")
     public String showCandidatesForJob(@PathVariable Long jobId, Model model) {
         Job job = jobService.findById(jobId);
@@ -114,6 +116,7 @@ public class JobController {
         return "jobs/invite-candidates";
     }
 
+    // Xử lý mời ứng viên ứng tuyển
     @PostMapping("/{jobId}/inviteCandidate/{candidateId}")
     public String inviteCandidate(@PathVariable Long jobId, @PathVariable Long candidateId) {
         Candidate candidate = candidateService.findById(candidateId);
@@ -140,6 +143,7 @@ public class JobController {
         return "redirect:/jobs/" + jobId + "/invite";
     }
 
+    // Xử lý xóa công việc
     @PostMapping("/{id}/delete")
     public String deleteJob(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
@@ -152,6 +156,7 @@ public class JobController {
         return "redirect:/jobs/list";
     }
 
+    // Hiển thị form chỉnh sửa công việc
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         // Tìm kiếm công việc theo ID
@@ -182,6 +187,7 @@ public class JobController {
         }
     }
 
+    //  Xử lý cập nhật công việc
     @PostMapping("/{id}/edit")
     public String updateJob(@PathVariable("id") Long id, @ModelAttribute("job") Job job, RedirectAttributes redirectAttributes) {
         // Tìm job theo id và kiểm tra xem có tồn tại hay không

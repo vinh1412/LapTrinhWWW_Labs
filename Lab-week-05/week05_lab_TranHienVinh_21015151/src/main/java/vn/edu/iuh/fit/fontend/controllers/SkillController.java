@@ -28,6 +28,7 @@ import java.util.List;
 public class SkillController {
     @Autowired
     private SkillService skillService;
+    // Hiển thị danh sách kỹ năng được đề xuất cho ứng viên
     @GetMapping("/recommend/{candidateId}")
     public String recommendSkills(@PathVariable Long candidateId, Model model) {
         List<Skill> recommendedSkills = skillService.recommendSkillsForCandidate(candidateId);
