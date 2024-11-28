@@ -15,14 +15,10 @@
         .job-title {
             color: #007bff;
             font-weight: bold;
-        }
-        .company-name {
-            font-style: italic;
-            color: #6c757d;
+            text-align: center;
         }
         .skill-level {
             font-weight: bold;
-            color: #28a745;
         }
     </style>
 </head>
@@ -35,13 +31,8 @@
             <!-- Job Title -->
             <h3 class="job-title mb-3" th:text="${job.getJobName()}">Job Name</h3>
 
-            <!-- Company Name -->
-            <p class="mb-2">
-                <strong>Company:</strong> <span class="company-name" th:text="${job.getCompany().getCompName()}">Company Name</span>
-            </p>
-
             <!-- Job Description -->
-            <p><strong>Description:</strong></p>
+            <h4>Description:</h4>
             <p class="text-muted" th:text="${job.getJobDesc()}">Job Description goes here.</p>
 
             <!-- Required Skills -->
@@ -52,11 +43,24 @@
                     <span class="badge bg-success skill-level" th:text="${jobSkill.getSkillLevel()}">Skill Level</span>
                 </li>
             </ul>
+
+            <!-- Company Section -->
+            <h4 class="mt-4">Company Information</h4>
+            <div class="mt-3">
+                <p><strong>Company Name:</strong> <span th:text="${job.getCompany().getCompName()}">Company Name</span></p>
+                <p><strong>About:</strong> <span th:text="${job.getCompany().getAbout()}">About the company</span></p>
+                <p><strong>Email:</strong> <span th:text="${job.getCompany().getEmail()}">example@company.com</span></p>
+                <p><strong>Phone:</strong> <span th:text="${job.getCompany().getPhone()}">123-456-7890</span></p>
+                <p><strong>Website:</strong>
+                    <a th:href="${job.getCompany().getWebUrl()}" th:text="${job.getCompany().getWebUrl()}">Website URL</a>
+                </p>
+                <p><strong>Address:</strong> <span th:text="${job.getCompany().getAddress().getAddress()}">Company Address</span></p>
+            </div>
         </div>
     </div>
 
     <!-- Back Button -->
-    <div class="text-center mt-4">
+    <div class="text-center mt-4 mb-4">
         <a th:href="@{/jobs/recommendations}" class="btn btn-primary btn-lg">Back to Recommendations</a>
     </div>
 </div>
