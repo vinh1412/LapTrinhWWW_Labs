@@ -11,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import vn.edu.iuh.fit.backend.converters.SkillLevelConverter;
+import vn.edu.iuh.fit.backend.enums.SkillLevel;
+import vn.edu.iuh.fit.backend.enums.SkillType;
 import vn.edu.iuh.fit.backend.models.*;
 import vn.edu.iuh.fit.backend.services.*;
 
@@ -53,6 +56,7 @@ public class JobController {
         model.addAttribute("jobPostings", jobPostings);
         return "companies/dashboard-company";
     }
+
     // Hiển thị form tạo mới công việc
     @GetMapping("/new")
     public String showCreateJobForm(@SessionAttribute("email") String email, Model model) {
@@ -65,12 +69,50 @@ public class JobController {
         model.addAttribute("company", company);
         return "jobs/form-add-job";
     }
+
     // Lưu công việc mới
     @PostMapping("/save")
-    public String saveJob(@ModelAttribute("job") Job job) {
+    public String saveJob(@ModelAttribute("job") Job job,
+                          @RequestParam(value = "newSkillNames", required = false) List<String> newSkillNames,
+                          @RequestParam(value = "newSkillLevels", required = false) List<Byte> newSkillLevels,
+                          @RequestParam(value = "newSkillMoreInfos", required = false) List<String> newSkillMoreInfos) {
         if (job.getJobSkills() == null) {
             job.setJobSkills(new ArrayList<>());
         }
+
+        // Xử lý kỹ năng mới được nhập
+        if (newSkillNames != null && newSkillLevels != null) {
+            for (int i = 0; i < newSkillNames.size(); i++) {
+                String skillName = newSkillNames.get(i).trim();
+                Byte skillLevelByte  = newSkillLevels != null ? newSkillLevels.get(i) : 1;
+                SkillLevelConverter converter = new SkillLevelConverter();
+                SkillLevel skillLevel = converter.convertToEntityAttribute(skillLevelByte);
+                String moreInfo = (newSkillMoreInfos != null && newSkillMoreInfos.size() > i)
+                        ? newSkillMoreInfos.get(i).trim()
+                        : "";
+
+                if (!skillName.isEmpty()) {
+                    // Tìm kỹ năng trong cơ sở dữ liệu, nếu chưa tồn tại thì thêm mới
+                    Skill skill = skillService.findBySkillName(skillName);
+                    if (skill == null) {
+                        skill = new Skill();
+                        skill.setSkillName(skillName);
+                        skill.setSkillDescription("A programming language used for development of software.");
+                        skill.setType(SkillType.SOFT_SKILL);
+                        skillService.save(skill);
+                    }
+                    // Tạo JobSkill mới từ kỹ năng và thêm vào danh sách
+                    JobSkill jobSkill = new JobSkill();
+                    jobSkill.setSkill(skill);
+                    jobSkill.setSkillLevel(skillLevel);
+                    jobSkill.setMoreInfos(moreInfo);
+                    jobSkill.setJob(job);
+
+                    job.getJobSkills().add(jobSkill);
+                }
+            }
+        }
+
         job.getJobSkills().removeIf(jobSkill -> jobSkill.getSkill() == null || jobSkill.getSkillLevel() == null);
         jobService.save(job);
         for (JobSkill jobSkill : job.getJobSkills()) {

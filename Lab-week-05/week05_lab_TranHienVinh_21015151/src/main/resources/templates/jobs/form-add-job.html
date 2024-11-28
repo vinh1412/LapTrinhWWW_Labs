@@ -46,6 +46,12 @@
                     </div>
                 </div>
             </div>
+            <div class="mb-3">
+                <div id="newSkillsSection">
+                </div>
+                <button type="button" class="btn btn-secondary mt-3" id="add-new-skill">Add Another Skill</button>
+            </div>
+
 
             <div class="d-flex justify-content-between">
                 <a th:href="@{/jobs/list}" class="btn btn-secondary">Back to Job List</a>
@@ -56,5 +62,30 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('add-new-skill').addEventListener('click', function () {
+        const newSkillsSection = document.getElementById('newSkillsSection');
+
+        // Tạo một div chứa các trường nhập cho kỹ năng mới
+        const newSkillEntry = document.createElement('div');
+        newSkillEntry.classList.add('new-skill-entry', 'mt-3');
+
+        newSkillEntry.innerHTML = `
+            <input type="text" class="form-control" name="newSkillNames" placeholder="Enter new skill name">
+            <select class="form-select mt-2" name="newSkillLevels">
+                <option value="1">Beginner</option>
+                <option value="2">Intermediate</option>
+                <option value="3">Advanced</option>
+                <option value="4">Professional</option>
+                <option value="5">Master</option>
+            </select>
+            <input type="text" class="form-control mt-2" name="newSkillMoreInfos" placeholder="Enter more information">
+        `;
+
+        // Thêm trường mới vào khu vực hiển thị kỹ năng
+        newSkillsSection.appendChild(newSkillEntry);
+    });
+</script>
+
 </body>
 </html>
