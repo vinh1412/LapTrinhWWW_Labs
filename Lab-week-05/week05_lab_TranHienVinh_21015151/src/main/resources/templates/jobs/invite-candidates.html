@@ -28,7 +28,10 @@
                 <td th:text="${candidate.getEmail()}"></td>
                 <td>
                     <ul>
-                        <li th:each="skill : ${candidate.candidateSkills}" th:text="${skill.getSkill().getSkillName()}"></li>
+                        <li th:each="skill : ${candidate.candidateSkills}">
+                            <span th:text="${skill.getSkill().getSkillName()}"></span>
+                            <span th:text="' (' + ${skill.getSkillLevel()} + ')'"></span> <!-- Hiển thị tên skillLevel -->
+                        </li>
                     </ul>
                 </td>
                 <td>
