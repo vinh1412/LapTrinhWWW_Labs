@@ -91,6 +91,7 @@ public class CandidateController {
                                   @RequestParam List<Byte> skillLevels,
                                   @RequestParam(required = false) List<String> newSkillNames,
                                   @RequestParam(required = false) List<Byte> newSkillLevels,
+                                  @RequestParam(required = false) List<String> newSkillMoreInfos,
                                   RedirectAttributes redirectAttributes) {
         // Kiểm tra số điện thoại đã tồn tại
         if (candidateService.existsByPhone(candidate.getPhone())) {
@@ -113,7 +114,7 @@ public class CandidateController {
             for (int i = 0; i < newSkillNames.size(); i++) {
                 String skillName = newSkillNames.get(i);
                 Byte skillLevel = newSkillLevels != null ? newSkillLevels.get(i) : 1; // Nếu không có cấp độ, mặc định là 1
-
+                String moreInfo = newSkillMoreInfos != null ? newSkillMoreInfos.get(i) : "";
                 if (skillName != null && !skillName.trim().isEmpty()) {
                     // Kiểm tra nếu kỹ năng chưa có trong cơ sở dữ liệu
                     Skill existingSkill = skillService.findBySkillName(skillName.trim());
@@ -139,7 +140,7 @@ public class CandidateController {
                     candidateSkill.setCan(candidate);
                     candidateSkill.setSkill(newSkill);
                     candidateSkill.setSkillLevel(skillLevel);
-                    candidateSkill.setMoreInfos("More info");
+                    candidateSkill.setMoreInfos(moreInfo);
 
                     // Thêm vào danh sách CandidateSkill của Candidate
                     candidate.getCandidateSkills().add(candidateSkill);
@@ -166,6 +167,7 @@ public class CandidateController {
             // Thêm vào danh sách CandidateSkill của Candidate
             candidate.getCandidateSkills().add(candidateSkill);
         }
+
         // Lưu đối tượng Candidate và CandidateSkill vào cơ sở dữ liệu
         candidateService.saveCandidate(candidate);
         redirectAttributes.addFlashAttribute("successMessage", "Candidate registered successfully!");
@@ -317,7 +319,7 @@ public class CandidateController {
             experienceRepository.save(existingExperience);
         }
 
-        candidateService.saveCandidate(existingCandidate);
+        candidateService.updateCandidate(existingCandidate);
 
         redirectAttributes.addFlashAttribute("successMessage", "Candidate updated successfully!");
         return "redirect:/jobs/recommendations"; // Quay lại trang gợi ý công việc

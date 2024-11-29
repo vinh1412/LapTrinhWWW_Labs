@@ -25,4 +25,5 @@ import java.util.List;
 public interface CandidateSkillRepository extends JpaRepository<CandidateSkill, CandidateSkillId> {
     //Tim cac ky nang cua ung vien theo id ung vien va id ky nang
     CandidateSkill findByCanIdAndSkillId(Long canId, Long skillId);
+    List<CandidateSkill> findByCanId(Long canId);
 }

@@ -67,9 +67,19 @@ public class CandidateService {
     public boolean existsByEmail(String email) {
         return candidateRepository.existsByEmail(email);
     }
-    public void saveCandidate(Candidate candidate) {
+    public void save(Candidate candidate) {
         Address address = candidate.getAddress();
         addressRepository.save(address);
+        candidate.setAddress(address);
+        candidateRepository.save(candidate);
+    }
+    public void saveCandidate(Candidate candidate) {
+        Address address = candidate.getAddress();
+        if (address != null) {
+            addressRepository.save(address);
+            candidate.setAddress(address);
+            candidateRepository.save(candidate);
+        }
 
         for (CandidateSkill candidateSkill : candidate.getCandidateSkills()) {
             Skill skill = candidateSkill.getSkill();
@@ -77,9 +87,48 @@ public class CandidateService {
             if (skill.getId() == null || !skillRepository.existsById(skill.getId())) {
                 skillRepository.save(skill);
             }
+            CandidateSkillId id = new CandidateSkillId();
+            id.setCanId(candidate.getId());
+            id.setSkillId(skill.getId());
 
+            candidateSkill.setId(id);
             candidateSkill.setCan(candidate);
             candidateSkill.setSkill(skill);
+            System.out.println("Candidate: " + candidateSkill.getCan().getFullName());
+            System.out.println("Skill: " + candidateSkill.getSkill().getSkillName());
+
+            candidateSkillRepository.save(candidateSkill);
+        }
+
+        for (Experience experience : candidate.getExperiences()) {
+            experience.setCandidate(candidate);
+            experienceRepository.save(experience);
+        }
+        candidateRepository.save(candidate);
+    }
+    public void updateCandidate(Candidate candidate) {
+        Address address = candidate.getAddress();
+        if (address != null) {
+            addressRepository.save(address);
+            candidate.setAddress(address);
+        }
+
+        for (CandidateSkill candidateSkill : candidate.getCandidateSkills()) {
+            Skill skill = candidateSkill.getSkill();
+
+            if (skill.getId() == null || !skillRepository.existsById(skill.getId())) {
+                skillRepository.save(skill);
+            }
+            CandidateSkillId id = new CandidateSkillId();
+            id.setCanId(candidate.getId());
+            id.setSkillId(skill.getId());
+
+            candidateSkill.setId(id);
+            candidateSkill.setCan(candidate);
+            candidateSkill.setSkill(skill);
+            System.out.println("Candidate: " + candidateSkill.getCan().getFullName());
+            System.out.println("Skill: " + candidateSkill.getSkill().getSkillName());
+
             candidateSkillRepository.save(candidateSkill);
         }
 
