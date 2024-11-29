@@ -7,13 +7,11 @@
 package vn.edu.iuh.fit.fontend.controllers;
 
 import com.neovisionaries.i18n.CountryCode;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.iuh.fit.backend.models.Company;
 import vn.edu.iuh.fit.backend.services.CompanyService;
@@ -65,5 +63,56 @@ public class CompanyController {
             return "home/signUpCompany";
         }
     }
+    @GetMapping("/edit/{id}")
+    public String showEditCompanyForm(@PathVariable("id") Long id, Model model) {
+        Company company = companyService.findById(id);
+        if (company == null) {
+            throw new RuntimeException("Company not found!");
+        }
+        model.addAttribute("company", company);
+
+        // Danh sách quốc gia
+        List<CountryCode> countries = Arrays.asList(CountryCode.values());
+        model.addAttribute("countries", countries);
+
+        return "companies/form-edit-company";
+    }
+    @PostMapping("/edit/{id}")
+    public String editCompany(
+            @PathVariable Long id,
+            @ModelAttribute("company") Company updatedCompany,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+        try {
+            // Tìm công ty trong cơ sở dữ liệu
+            Company existingCompany = companyService.findById(id);
+            if (existingCompany == null) {
+                redirectAttributes.addFlashAttribute("message", "Company not found!");
+                return "redirect:/jobs/list";
+            }
+
+            // Cập nhật thông tin công ty
+            existingCompany.setCompName(updatedCompany.getCompName());
+            existingCompany.setEmail(updatedCompany.getEmail());
+            existingCompany.setPhone(updatedCompany.getPhone());
+            existingCompany.setAbout(updatedCompany.getAbout());
+            existingCompany.setWebUrl(updatedCompany.getWebUrl());
+            existingCompany.setAddress(updatedCompany.getAddress());
+
+            // Lưu vào cơ sở dữ liệu
+            companyService.save(existingCompany);
+
+            // Cập nhật email trong session
+            session.setAttribute("email", existingCompany.getEmail());
+
+            // Thông báo thành công
+            redirectAttributes.addFlashAttribute("message", "Company updated successfully!");
+            return "redirect:/jobs/list";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Error updating company: " + e.getMessage());
+            return "redirect:/companies/edit/" + id;
+        }
+    }
+
 
 }
