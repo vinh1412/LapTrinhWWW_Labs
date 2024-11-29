@@ -20,7 +20,7 @@
 <div class="container pt-2">
     <div class="row align-items-center">
         <!-- Ô tìm kiếm -->
-        <div class="col-md-10">
+        <div class="col-md-8">
             <form th:action="@{/search}" method="get">
                 <div class="input-group" style="width: 100%;">
                     <input type="text" name="search" class="form-control"
@@ -32,11 +32,19 @@
         </div>
 
 
-        <div class="col-md-2 text-end">
+        <div class="col-md-4 text-end">
             <!-- Nút Đăng nhập -->
             <a th:href="@{/login}" class="btn btn-primary">Login</a>
             <!-- Nút Đăng ký -->
-            <a th:href="@{/signup}" class="btn btn-primary">Register</a>
+            <!-- Dropdown cho Đăng ký -->
+            <button class="btn btn-primary dropdown-toggle" type="button" id="registerDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                Register
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="registerDropdown">
+                <li><a class="dropdown-item" href="#" th:href="@{/signup}">Candidate</a></li>
+                <li><a class="dropdown-item" href="#" th:href="@{/companies/register}">Company</a></li>
+            </ul>
         </div>
     </div>
 </div>
@@ -99,7 +107,8 @@
                 <!-- Các số trang -->
                 <li th:each="pageNumber : ${pageNumbers}" class="page-item"
                     th:classappend="${pageNumber == jobPage.number + 1} ? 'active' : ''">
-                    <a th:href="@{/search(size=${jobPage.size}, page=${pageNumber - 1}, search=${search})}"  class="page-link"
+                    <a th:href="@{/search(size=${jobPage.size}, page=${pageNumber - 1}, search=${search})}"
+                       class="page-link"
                        th:text="${pageNumber}"></a>
                 </li>
 

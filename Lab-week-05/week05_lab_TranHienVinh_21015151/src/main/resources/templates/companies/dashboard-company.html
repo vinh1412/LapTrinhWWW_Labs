@@ -10,6 +10,7 @@
 <div class="container mt-5">
     <div class="text-center mb-4">
         <h1>Welcome, <span th:text="${company.getCompName()}">Company</span></h1>
+        <a th:href="@{/company/edit}" class="btn btn-primary mx-2">Edit Company</a>
         <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
     </div>
     <h2>Job Postings</h2>

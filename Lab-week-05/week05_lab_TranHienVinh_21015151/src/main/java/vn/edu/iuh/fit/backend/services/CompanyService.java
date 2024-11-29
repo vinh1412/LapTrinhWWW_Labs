@@ -8,7 +8,9 @@ package vn.edu.iuh.fit.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import vn.edu.iuh.fit.backend.models.Address;
 import vn.edu.iuh.fit.backend.models.Company;
+import vn.edu.iuh.fit.backend.repositories.AddressRepository;
 import vn.edu.iuh.fit.backend.repositories.CompanyRepository;
 
 import java.util.List;
@@ -23,6 +25,8 @@ import java.util.List;
 public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
+    private AddressRepository addressRepository;
     public List<Company> findAll() {
         return companyRepository.findAll();
     }
@@ -31,5 +35,11 @@ public class CompanyService {
     }
     public Company findByEmail(String email) {
         return companyRepository.findByEmail(email).orElse(null);
+    }
+    public Company save(Company company) {
+        Address address = company.getAddress();
+        addressRepository.save(address);
+
+        return companyRepository.save(company);
     }
 }
