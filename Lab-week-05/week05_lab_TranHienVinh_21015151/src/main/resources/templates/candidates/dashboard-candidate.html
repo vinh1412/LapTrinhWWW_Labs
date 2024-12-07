@@ -64,6 +64,10 @@
     <div class="container-fluid">
         <a class="navbar-brand text-white" href="#">Job Portal</a>
         <div class="collapse navbar-collapse justify-content-end">
+            <a class="btn btn-primary"
+               th:href="@{/skills/recommend/{candidateId}(candidateId=${candidate.id})}">
+                Skill Recommendations
+            </a>
             <div class="btn-group">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     Welcome, <span th:text="${candidate.fullName}">Candidate</span>
@@ -79,7 +83,6 @@
 
 <div class="container mt-5">
     <h3 class="text-center mb-4">Job Recommendations</h3>
-
     <div th:if="${#lists.isEmpty(jobs)}" class="alert alert-warning text-center mt-4">
         No job recommendations found.
     </div>
