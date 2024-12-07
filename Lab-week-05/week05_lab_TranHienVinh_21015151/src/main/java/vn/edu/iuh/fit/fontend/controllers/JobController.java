@@ -160,7 +160,7 @@ public class JobController {
 
     // Xử lý mời ứng viên ứng tuyển
     @PostMapping("/{jobId}/inviteCandidate/{candidateId}")
-    public String inviteCandidate(@PathVariable Long jobId, @PathVariable Long candidateId) {
+    public String inviteCandidate(@PathVariable Long jobId, @PathVariable Long candidateId, RedirectAttributes redirectAttributes) {
         Candidate candidate = candidateService.findById(candidateId);
         if (candidate == null) {
             throw new RuntimeException("Candidate not found");
@@ -181,7 +181,7 @@ public class JobController {
                 "Please let us know if you're interested.\n\nBest regards,\n" + job.getCompany().getCompName();
 
         emailService.sendInvitationEmail(toEmail, subject, body);
-
+        redirectAttributes.addFlashAttribute("successMessage", "Invitation email sent successfully to " + candidate.getFullName());
         return "redirect:/jobs/" + jobId + "/invite";
     }
 
