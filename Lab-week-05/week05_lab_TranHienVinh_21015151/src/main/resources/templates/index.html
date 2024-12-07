@@ -12,6 +12,13 @@
             background-color: #f0f2f5;
             font-family: 'Arial', sans-serif;
         }
+        .header, .search-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #f0f2f5;
+            padding: 10px 0;
+        }
 
         .card {
             border: none;
@@ -24,6 +31,14 @@
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .job-list {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            margin-top: 20px;
+            scrollbar-width: none; /* Ẩn trên Firefox */
+            -ms-overflow-style: none;
         }
 
         .job-details {
@@ -54,27 +69,6 @@
         .pagination .page-item.active .page-link {
             background-color: #0056b3;
             border-color: #0056b3;
-        }
-
-        .header {
-            background-color: #007bff;
-            color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .header .btn {
-            font-size: 16px;
-        }
-
-        .search-bar .form-control {
-            border-radius: 25px;
-            padding: 10px 20px;
-        }
-
-        .search-bar button {
-            border-radius: 25px;
         }
 
         .card-title {
@@ -138,28 +132,30 @@
     </div>
 
     <!-- Job List -->
-    <div class="row">
-        <div th:each="job : ${jobPage.content}" class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${job.jobName}"></h5>
-                    <p class="card-text">
-                        <img src="https://cdn-icons-png.flaticon.com/512/2933/2933791.png" alt="Salary" class="icon">
-                        <span th:text="${job.jobDesc}"></span>
-                    </p>
-                    <p class="card-text">
-                        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Address" class="icon">
-                        <span th:text="${job.company.address.getAddress()}"></span>
-                    </p>
-                    <button class="btn btn-secondary" th:onclick="|toggleDetails('job-details-' + ${job.id})|">Details</button>
-                    <div th:id="'job-details-' + ${job.id}" class="job-details mt-3">
-                        <p class="card-text"><strong>Required Skills:</strong></p>
-                        <ul>
-                            <li th:each="jobSkill : ${job.jobSkills}">
-                                <span th:text="${jobSkill.skill.skillName}"></span> - <span th:text="${jobSkill.skillLevel}"></span>
-                                <p th:text="${jobSkill.moreInfos}"></p>
-                            </li>
-                        </ul>
+    <div class="job-list">
+        <div class="row">
+            <div th:each="job : ${jobPage.content}" class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${job.jobName}"></h5>
+                        <p class="card-text">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2933/2933791.png" alt="Salary" class="icon">
+                            <span th:text="${job.jobDesc}"></span>
+                        </p>
+                        <p class="card-text">
+                            <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Address" class="icon">
+                            <span th:text="${job.company.address.getAddress()}"></span>
+                        </p>
+                        <button class="btn btn-secondary" th:onclick="|toggleDetails('job-details-' + ${job.id})|">Details</button>
+                        <div th:id="'job-details-' + ${job.id}" class="job-details mt-3">
+                            <p class="card-text"><strong>Required Skills:</strong></p>
+                            <ul>
+                                <li th:each="jobSkill : ${job.jobSkills}">
+                                    <span th:text="${jobSkill.skill.skillName}"></span> - <span th:text="${jobSkill.skillLevel}"></span>
+                                    <p th:text="${jobSkill.moreInfos}"></p>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
