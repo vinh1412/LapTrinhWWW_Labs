@@ -3,144 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Welcome</title>
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/9631/9631363.png"
-          type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-          crossorigin="anonymous">
+    <title>Job Listing</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/9631/9631363.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
         .job-details {
-            display: none; /* Ẩn chi tiết công việc ban đầu */
+            display: none;
+        }
+
+        .icon {
+            width: 25px;
+            height: 25px;
+            margin-right: 8px;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #0056b3;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #004494;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .header .btn {
+            font-size: 16px;
+        }
+
+        .search-bar .form-control {
+            border-radius: 25px;
+            padding: 10px 20px;
+        }
+
+        .search-bar button {
+            border-radius: 25px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .footer {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .footer a {
+            color: #ffdd57;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-<div class="container pt-2">
-    <div class="row align-items-center">
-        <!-- Ô tìm kiếm -->
+<div class="container pt-4">
+    <!-- Header -->
+    <div class="header text-center">
+        <h1>Job Finder Platform</h1>
+        <p>Your dream job is just a click away!</p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar row align-items-center mb-4">
         <div class="col-md-8">
             <form th:action="@{/search}" method="get">
-                <div class="input-group" style="width: 100%;">
+                <div class="input-group">
                     <input type="text" name="search" class="form-control"
-                           placeholder="Search for jobs by job name or company name or skill name"
+                           placeholder="🔍 Search by job name, company, or skills"
                            aria-label="Search" th:value="${search}">
                     <button class="btn btn-primary" type="submit">Search</button>
                 </div>
             </form>
         </div>
-
-
         <div class="col-md-4 text-end">
-            <!-- Nút Đăng nhập -->
-            <a th:href="@{/login}" class="btn btn-primary">Login</a>
-            <!-- Nút Đăng ký -->
-            <!-- Dropdown cho Đăng ký -->
-            <button class="btn btn-primary dropdown-toggle" type="button" id="registerDropdown"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                Register
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="registerDropdown">
-                <li><a class="dropdown-item" href="#" th:href="@{/signup}">Candidate</a></li>
-                <li><a class="dropdown-item" href="#" th:href="@{/companies/register}">Company</a></li>
-            </ul>
+            <a th:href="@{/login}" class="btn btn-light me-2"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <div class="btn-group">
+                <button class="btn btn-light dropdown-toggle" type="button" id="registerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="registerDropdown">
+                    <li><a class="dropdown-item" th:href="@{/signup}">Candidate</a></li>
+                    <li><a class="dropdown-item" th:href="@{/companies/register}">Company</a></li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Nội dung chính -->
-<div class="container mt-2 pt-5">
-    <h1 class="mb-4">Job List</h1>
-
-    <!-- Danh sách công việc -->
+    <!-- Job List -->
     <div class="row">
         <div th:each="job : ${jobPage.content}" class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${job.jobName}"></h5>
-                    <p class="card-text" th:text="${job.jobDesc}"></p>
-                    <p class="card-text">Company: <span th:text="${job.company.compName}"></span>
-                    </p>
-
-                    <!-- Hiển thị địa chỉ công ty -->
                     <p class="card-text">
-                        <strong>Address:</strong> <span
-                            th:text="${job.company.address.getAddress()}"></span>
+                        <img src="https://cdn-icons-png.flaticon.com/512/2933/2933791.png" alt="Salary" class="icon">
+                        <span th:text="${job.jobDesc}"></span>
                     </p>
-
-                    <!-- Nút Xem chi tiết -->
-                    <button class="btn btn-secondary"
-                            th:onclick="|toggleDetails('job-details-' + ${job.id})|">Details
-                    </button>
-
-                    <!-- Chi tiết công việc (ẩn mặc định) -->
-                    <div th:id="'job-details-' + ${job.id}" class="job-details">
+                    <p class="card-text">
+                        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Address" class="icon">
+                        <span th:text="${job.company.address.getAddress()}"></span>
+                    </p>
+                    <button class="btn btn-secondary" th:onclick="|toggleDetails('job-details-' + ${job.id})|">Details</button>
+                    <div th:id="'job-details-' + ${job.id}" class="job-details mt-3">
                         <p class="card-text"><strong>Required Skills:</strong></p>
                         <ul>
                             <li th:each="jobSkill : ${job.jobSkills}">
-                                <span th:text="${jobSkill.skill.skillName}"></span> -
-                                <span th:text="${jobSkill.skillLevel}"></span>
+                                <span th:text="${jobSkill.skill.skillName}"></span> - <span th:text="${jobSkill.skillLevel}"></span>
                                 <p th:text="${jobSkill.moreInfos}"></p>
                             </li>
                         </ul>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Phân trang -->
-    <div class="container mt-5">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <!-- Phần phân trang - nút "Previous" -->
-                <li class="page-item" th:classappend="${jobPage.hasPrevious()} ? '' : 'disabled'">
-                    <a class="page-link"
-                       th:href="@{/search(size=${jobPage.size}, page=${jobPage.number - 1}, search=${search})}"
-                       aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${jobPage.hasPrevious()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/search(size=${jobPage.size}, page=${jobPage.number - 1}, search=${search})}" aria-label="Previous">
+                    &laquo;
+                </a>
+            </li>
+            <li th:each="pageNumber : ${pageNumbers}" class="page-item" th:classappend="${pageNumber == jobPage.number + 1} ? 'active' : ''">
+                <a class="page-link" th:href="@{/search(size=${jobPage.size}, page=${pageNumber - 1}, search=${search})}" th:text="${pageNumber}"></a>
+            </li>
+            <li class="page-item" th:classappend="${jobPage.hasNext()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/search(size=${jobPage.size}, page=${jobPage.number + 1}, search=${search})}" aria-label="Next">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-                <!-- Các số trang -->
-                <li th:each="pageNumber : ${pageNumbers}" class="page-item"
-                    th:classappend="${pageNumber == jobPage.number + 1} ? 'active' : ''">
-                    <a th:href="@{/search(size=${jobPage.size}, page=${pageNumber - 1}, search=${search})}"
-                       class="page-link"
-                       th:text="${pageNumber}"></a>
-                </li>
-
-                <!-- Phần phân trang - nút "Next" -->
-                <li class="page-item" th:classappend="${jobPage.hasNext()} ? '' : 'disabled'">
-                    <a class="page-link"
-                       th:href="@{/search(size=${jobPage.size}, page=${jobPage.number + 1}, search=${search})}"
-                       aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Job Finder | Designed with ❤️ by Tran Hien Vinh</p>
     </div>
 </div>
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
-<!-- JavaScript để điều khiển việc hiển thị chi tiết -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script>
     function toggleDetails(id) {
-        console.log(id);
         var element = document.getElementById(id);
         if (element) {
-            if (element.style.display === "none" || element.style.display === "") {
-                element.style.display = "block";
-            } else {
-                element.style.display = "none";
-            }
+            element.style.display = element.style.display === "block" ? "none" : "block";
         }
     }
 </script>
