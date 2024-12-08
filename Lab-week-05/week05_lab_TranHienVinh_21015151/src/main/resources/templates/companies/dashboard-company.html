@@ -101,7 +101,13 @@
 </nav>
 
 <div class="container mt-5">
-
+    <form th:action="@{/jobs/search}" method="get" class="mb-4">
+        <input type="hidden" name="companyId" th:value="${company.id}">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search by job name or skill name" name="query">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
     <h2 class="mb-4">Job Postings</h2>
 
     <!-- Notification messages -->

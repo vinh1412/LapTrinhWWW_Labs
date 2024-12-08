@@ -36,4 +36,10 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     // Tìm các công việc theo tên công việc, tên công ty hoặc tên kỹ năng
     Page<Job> findByJobNameContainingIgnoreCaseOrCompany_CompNameContainingIgnoreCaseOrJobSkills_Skill_SkillNameContainingIgnoreCase(
             String jobName, String companyName, String skillName, Pageable pageable);
+    @Query("SELECT j FROM Job j " +
+            "JOIN j.jobSkills js " +
+            "WHERE j.company.id = :companyId " +
+            "AND (LOWER(j.jobName) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR LOWER(js.skill.skillName) LIKE LOWER(CONCAT('%', :query, '%')))")
+    List<Job> searchByJobNameOrSkillName(@Param("query") String query, @Param("companyId") Long companyId);
 }

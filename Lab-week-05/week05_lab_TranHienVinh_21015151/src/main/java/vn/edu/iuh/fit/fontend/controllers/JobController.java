@@ -265,4 +265,17 @@ public class JobController {
         redirectAttributes.addFlashAttribute("successMessage", "Job updated successfully!");
         return "redirect:/jobs/list";
     }
+    @GetMapping("/search")
+    public String searchJobs(
+            @RequestParam("query") String query,
+            @RequestParam("companyId") Long companyId,
+            Model model) {
+
+        Company company = companyService.findById(companyId);
+        model.addAttribute("company", company);
+        List<Job> jobPostings = jobService.searchJobs(query, companyId);
+        model.addAttribute("jobPostings", jobPostings);
+        model.addAttribute("query", query);
+        return "companies/dashboard-company";
+    }
 }

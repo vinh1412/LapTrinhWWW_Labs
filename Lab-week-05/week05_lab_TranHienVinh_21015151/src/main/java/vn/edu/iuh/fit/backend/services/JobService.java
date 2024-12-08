@@ -70,4 +70,7 @@ public class JobService {
     public void deleteJobById(Long id) {
         jobRepository.deleteById(id);
     }
+    public List<Job> searchJobs(String query, Long companyId) {
+        return jobRepository.searchByJobNameOrSkillName(query, companyId);
+    }
 }
