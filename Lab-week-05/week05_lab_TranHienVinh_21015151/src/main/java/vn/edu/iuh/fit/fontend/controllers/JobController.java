@@ -6,6 +6,7 @@
 
 package vn.edu.iuh.fit.fontend.controllers;
 
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +43,8 @@ public class JobController {
     private CandidateService candidateService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private JobApplicationService jobApplicationService;
 
     // Hiển thị danh sách công việc của công ty
     @GetMapping("/list")
@@ -278,4 +281,41 @@ public class JobController {
         model.addAttribute("query", query);
         return "companies/dashboard-company";
     }
+    @GetMapping("/apply/{id}")
+    public String showApplicationForm(@PathVariable Long id, @SessionAttribute("email") String email, Model model) {
+        Job job = jobService.findById(id);
+        model.addAttribute("job", job);
+        model.addAttribute("jobId", id);
+        Candidate candidate = candidateService.findByEmail(email);
+        model.addAttribute("candidate", candidate);
+        return "candidates/apply";
+    }
+
+    @PostMapping("apply/sendApply")
+    public String submitApplication(@RequestParam String jobId,
+                                    @RequestParam String applicantName,
+                                    @RequestParam String email,
+                                    @RequestParam String message,
+                                    RedirectAttributes redirectAttributes) {
+        try {
+            // Retrieve the job based on the jobId
+            Job job = jobService.findById(Long.parseLong(jobId));
+
+            // Optionally, retrieve the candidate based on their email or other attributes
+            Candidate candidate = candidateService.findByEmail(email);
+            if (candidate == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Candidate not found.");
+                return "redirect:/jobs/apply/" + jobId;
+            }
+
+            // Send the application with detailed candidate information
+            jobApplicationService.sendApplication(jobId, applicantName, email, message, job, candidate);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Your application has been sent successfully!");
+        } catch (MessagingException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "There was an error sending your application.");
+        }
+        return "redirect:/jobs/apply/" + jobId;
+    }
+
 }

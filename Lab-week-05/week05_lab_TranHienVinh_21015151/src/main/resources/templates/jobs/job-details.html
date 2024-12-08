@@ -121,13 +121,19 @@
             </div>
         </div>
     </div>
-
+    <!-- Apply Button -->
+    <div class="text-center mt-4">
+        <a th:href="@{/jobs/apply/{id}(id=${job.id})}" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i> Apply for this Job
+        </a>
+    </div>
     <!-- Back Button -->
     <div class="text-center mt-4 mb-4">
         <a th:href="@{/jobs/recommendations}" class="back-btn">
             <i class="fas fa-arrow-left"></i> Back to Dashboard
         </a>
     </div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
