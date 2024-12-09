@@ -204,9 +204,12 @@ public class CandidateController {
             @ModelAttribute Candidate updatedCandidate,
             @RequestParam(required = false) List<Long> skillIds,
             @RequestParam(required = false) List<Byte> skillLevels,
+            @RequestParam(required = false) List<String> moreInfos,
             @RequestParam(required = false) List<String> newSkillNames,
             @RequestParam(required = false) List<Byte> newSkillLevels,
+            @RequestParam(required = false) List<String> newSkillMoreInfos,
             RedirectAttributes redirectAttributes) {
+
 
         Candidate existingCandidate = candidateService.findById(id);
         if (existingCandidate == null) {
@@ -214,33 +217,28 @@ public class CandidateController {
             return "redirect:/candidates";
         }
 
-        // Cập nhật thông tin cơ bản
+        // Cập nhật thông tin cơ bản (các phần đã có)
         existingCandidate.setFullName(updatedCandidate.getFullName());
         existingCandidate.setDob(updatedCandidate.getDob());
         existingCandidate.setEmail(updatedCandidate.getEmail());
         existingCandidate.setPhone(updatedCandidate.getPhone());
-
-        // Cập nhật địa chỉ
-        Address address = existingCandidate.getAddress();
-        address.setStreet(updatedCandidate.getAddress().getStreet());
-        address.setNumber(updatedCandidate.getAddress().getNumber());
-        address.setCity(updatedCandidate.getAddress().getCity());
-        address.setZipcode(updatedCandidate.getAddress().getZipcode());
-        address.setCountry(updatedCandidate.getAddress().getCountry());
-
 
         // Cập nhật kỹ năng đã chọn (nếu có)
         if (skillIds != null && !skillIds.isEmpty()) {
             for (int i = 0; i < skillIds.size(); i++) {
                 Long skillId = skillIds.get(i);
                 Byte skillLevel = skillLevels.get(i);
+                String moreInfo = (moreInfos != null && moreInfos.size() > i) ? moreInfos.get(i) : ""; // Lấy moreInfos
+
+
                 Skill skill = skillService.findById(skillId);
 
-                // Tìm kỹ năng của ứng viên và cập nhật mức độ
+                // Tìm kỹ năng của ứng viên và cập nhật mức độ và thông tin thêm
                 CandidateSkill existingCandidateSkill = candidateSkillRepository.findByCanIdAndSkillId(existingCandidate.getId(), skill.getId());
 
                 if (existingCandidateSkill != null) {
                     existingCandidateSkill.setSkillLevel(skillLevel);
+                    existingCandidateSkill.setMoreInfos(moreInfo);
                     candidateSkillRepository.save(existingCandidateSkill); // Lưu lại thay đổi
                 } else {
                     // Nếu không tìm thấy, thêm kỹ năng mới vào
@@ -252,9 +250,11 @@ public class CandidateController {
                     candidateSkill.setCan(existingCandidate);
                     candidateSkill.setSkill(skill);
                     candidateSkill.setSkillLevel(skillLevel);
+                    candidateSkill.setMoreInfos(moreInfo);
 
                     existingCandidate.getCandidateSkills().add(candidateSkill);
                 }
+
             }
         }
 
@@ -263,12 +263,14 @@ public class CandidateController {
             for (int i = 0; i < newSkillNames.size(); i++) {
                 String skillName = newSkillNames.get(i);
                 Byte skillLevel = (newSkillLevels != null && newSkillLevels.size() > i) ? newSkillLevels.get(i) : 1;
+                String moreInfo = (newSkillMoreInfos != null && newSkillMoreInfos.size() > i) ? newSkillMoreInfos.get(i) : "";
 
                 // Kiểm tra xem kỹ năng đã tồn tại chưa, nếu chưa thì thêm mới
                 Skill newSkill = skillService.findBySkillName(skillName.trim());
                 if (newSkill == null) {
                     newSkill = new Skill();
                     newSkill.setSkillName(skillName);
+                    newSkill.setSkillDescription("A programming language used for development of software.");
                     skillService.save(newSkill); // Lưu kỹ năng mới vào DB
                 }
 
@@ -281,34 +283,26 @@ public class CandidateController {
                 candidateSkill.setCan(existingCandidate);
                 candidateSkill.setSkill(newSkill);
                 candidateSkill.setSkillLevel(skillLevel);
+                candidateSkill.setMoreInfos(moreInfo);
 
-                // Log trước khi thêm kỹ năng vào danh sách
-                System.out.println("Before adding new skill: " + existingCandidate.getCandidateSkills());
-
-                // Thêm kỹ năng mới vào danh sách kỹ năng của ứng viên
                 existingCandidate.getCandidateSkills().add(candidateSkill);
-
-                // Log sau khi thêm kỹ năng vào danh sách
-                System.out.println("After adding new skill: " + existingCandidate.getCandidateSkills());
+                candidateSkillRepository.save(candidateSkill);
             }
         }
-        // Cập nhật danh sách kinh nghiệm
+
+        // Cập nhật danh sách kinh nghiệm (các phần đã có)
         List<Experience> updatedExperiences = updatedCandidate.getExperiences();
         List<Experience> existingExperiences = existingCandidate.getExperiences();
 
         for (int i = 0; i < updatedExperiences.size(); i++) {
             Experience updatedExperience = updatedExperiences.get(i);
-
-            // Kiểm tra xem kinh nghiệm đã tồn tại chưa
             Experience existingExperience = (i < existingExperiences.size()) ? existingExperiences.get(i) : null;
 
             if (existingExperience == null) {
-                // Nếu chưa tồn tại, tạo mới
                 existingExperience = new Experience();
                 existingExperiences.add(existingExperience);
             }
 
-            // Cập nhật thông tin kinh nghiệm
             existingExperience.setCompanyName(updatedExperience.getCompanyName());
             existingExperience.setRole(updatedExperience.getRole());
             existingExperience.setFromDate(updatedExperience.getFromDate());
