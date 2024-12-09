@@ -4,7 +4,6 @@
     <title>Thống kê</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Tổng quan */
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
@@ -60,7 +59,7 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        /* Biểu đồ */
+
         .chart-container {
             width: 90%;
             max-width: 1100px;
@@ -80,8 +79,8 @@
 
     <!-- Nút chọn biểu đồ -->
     <div class="btn-container">
-        <button class="btn" onclick="showJobSkillsChart()">Kỹ năng công việc</button>
-        <button class="btn" onclick="showCandidateSkillsChart()">Kỹ năng ứng viên</button>
+        <button class="btn" onclick="showJobSkillsChart()">Top kỹ năng được tuyển dụng nhiều nhất</button>
+        <button class="btn" onclick="showCandidateSkillsChart()">Top kỹ năng phổ biến của ứng viên</button>
     </div>
 
     <!-- Biểu đồ -->
@@ -98,8 +97,7 @@
     // Dữ liệu kỹ năng ứng viên
     const candidateSkillsLabels = /*[[${topSkillsInCandidates.keySet()}]]*/;
     const candidateSkillsCounts = /*[[${topSkillsInCandidates.values()}]]*/;
-
-    // Mảng màu gradient
+    
     function generateColors(length) {
         const colors = [];
         const baseColors = ['#007bff', '#6f42c1', '#20c997', '#ffc107', '#dc3545'];
