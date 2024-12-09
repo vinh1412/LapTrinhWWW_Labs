@@ -206,7 +206,9 @@ public class JobController {
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         // Tìm kiếm công việc theo ID
         Job job = jobService.findById(id);
-        List<Skill> skills = skillService.findAll();
+        List<Skill> skills = job.getJobSkills().stream()
+                .map(JobSkill::getSkill)
+                .collect(Collectors.toList());
         System.out.println("jobSkills:");
         for (JobSkill jobSkill : job.getJobSkills()) {
             System.out.println("  JobSkill ID: " + jobSkill.getSkill().getId() + ", Skill Name: " + jobSkill.getSkill().getSkillName());
