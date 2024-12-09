@@ -26,4 +26,6 @@ public interface CandidateSkillRepository extends JpaRepository<CandidateSkill, 
     //Tim cac ky nang cua ung vien theo id ung vien va id ky nang
     CandidateSkill findByCanIdAndSkillId(Long canId, Long skillId);
     List<CandidateSkill> findByCanId(Long canId);
+    @Query("SELECT cs.skill.skillName, COUNT(cs) FROM CandidateSkill cs GROUP BY cs.skill.skillName ORDER BY COUNT(cs) DESC")
+    List<Object[]> findTopSkillsInCandidates();
 }
