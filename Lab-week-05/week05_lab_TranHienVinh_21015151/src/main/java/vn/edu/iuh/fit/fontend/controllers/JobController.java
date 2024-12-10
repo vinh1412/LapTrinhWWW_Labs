@@ -236,40 +236,77 @@ public class JobController {
 
     //  Xử lý cập nhật công việc
     @PostMapping("/{id}/edit")
-    public String updateJob(@PathVariable("id") Long id, @ModelAttribute("job") Job job, RedirectAttributes redirectAttributes) {
-        // Tìm job theo id và kiểm tra xem có tồn tại hay không
-        Job existingJob = jobService.findById(id); // Giả sử jobService có phương thức này
-
+    public String updateJob(@PathVariable("id") Long id,
+                            @ModelAttribute("job") Job job,
+                            @RequestParam(value = "newSkillNames", required = false) List<String> newSkillNames,
+                            @RequestParam(value = "newSkillLevels", required = false) List<Byte> newSkillLevels,
+                            @RequestParam(value = "newSkillMoreInfos", required = false) List<String> newSkillMoreInfos,
+                            RedirectAttributes redirectAttributes) {
+        // Tìm job theo id
+        Job existingJob = jobService.findById(id);
         if (existingJob == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Job not found!");
             return "redirect:/jobs/list";
         }
 
-        // Cập nhật các thuộc tính của job
+        // Cập nhật các thông tin cơ bản của job
         existingJob.setJobName(job.getJobName());
         existingJob.setJobDesc(job.getJobDesc());
         existingJob.setCompany(job.getCompany());
-        // Các thuộc tính khác của Job...
 
-        // Nếu jobSkills là null, khởi tạo mới
+        // Nếu jobSkills là null, khởi tạo danh sách mới
         if (job.getJobSkills() == null) {
             job.setJobSkills(new ArrayList<>());
         }
 
-        // Xử lý jobSkills
-        job.getJobSkills().removeIf(jobSkill -> jobSkill.getSkill() == null || jobSkill.getSkillLevel() == null);
-        for (JobSkill jobSkill : job.getJobSkills()) {
-            if (jobSkill.getSkill() != null && jobSkill.getSkillLevel() != null) {
-                jobSkill.setJob(existingJob); // Liên kết JobSkill với Job
-                jobSkillService.save(jobSkill); // Lưu JobSkill
+        // Xử lý thêm kỹ năng mới
+        if (newSkillNames != null && newSkillLevels != null) {
+            for (int i = 0; i < newSkillNames.size(); i++) {
+                String skillName = newSkillNames.get(i).trim();
+                Byte skillLevelByte = newSkillLevels != null ? newSkillLevels.get(i) : 1;
+                SkillLevelConverter converter = new SkillLevelConverter();
+                SkillLevel skillLevel = converter.convertToEntityAttribute(skillLevelByte);
+                String moreInfo = (newSkillMoreInfos != null && newSkillMoreInfos.size() > i)
+                        ? newSkillMoreInfos.get(i).trim()
+                        : "";
+
+                if (!skillName.isEmpty()) {
+                    // Tìm hoặc tạo mới skill trong DB
+                    Skill skill = skillService.findBySkillName(skillName);
+                    if (skill == null) {
+                        skill = new Skill();
+                        skill.setSkillName(skillName);
+                        skill.setSkillDescription("A new skill added during job update.");
+                        skill.setType(SkillType.SOFT_SKILL);
+                        skillService.save(skill);
+                    }
+
+                    // Tạo JobSkill mới và thêm vào danh sách
+                    JobSkill jobSkill = new JobSkill();
+                    jobSkill.setSkill(skill);
+                    jobSkill.setSkillLevel(skillLevel);
+                    jobSkill.setMoreInfos(moreInfo);
+                    jobSkill.setJob(existingJob);
+
+                    job.getJobSkills().add(jobSkill);
+                }
             }
         }
 
-        // Lưu lại job sau khi cập nhật
+        // Lưu các JobSkill hiện tại
+        for (JobSkill jobSkill : job.getJobSkills()) {
+            if (jobSkill.getSkill() != null && jobSkill.getSkillLevel() != null) {
+                jobSkill.setJob(existingJob);
+                jobSkillService.save(jobSkill);
+            }
+        }
+
+        // Lưu lại job
         jobService.save(existingJob);
         redirectAttributes.addFlashAttribute("successMessage", "Job updated successfully!");
         return "redirect:/jobs/list";
     }
+
     @GetMapping("/search")
     public String searchJobs(
             @RequestParam("query") String query,

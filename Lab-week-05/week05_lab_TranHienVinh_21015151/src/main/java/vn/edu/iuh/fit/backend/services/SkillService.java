@@ -16,6 +16,7 @@ import vn.edu.iuh.fit.backend.repositories.CandidateSkillRepository;
 import vn.edu.iuh.fit.backend.repositories.SkillRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,10 @@ public class SkillService {
     @Autowired
     private CandidateSkillRepository candidateSkillRepository;
     public List<Skill> findAll() {
-        return skillRepository.findAll();
+        return skillRepository.findAll().stream()
+                .sorted(Comparator.comparing(Skill::getId))
+                .limit(5)
+                .collect(Collectors.toList());
     }
     public Skill findById(Long id) {
         return skillRepository.findById(id).orElse(null);

@@ -142,24 +142,39 @@
 
         // Tạo một div chứa các trường nhập cho kỹ năng mới
         const newSkillEntry = document.createElement('div');
-        newSkillEntry.classList.add('new-skill-entry', 'mt-3');
+        newSkillEntry.classList.add('new-skill-entry', 'border', 'border-primary', 'rounded', 'p-3', 'mb-3');
 
         newSkillEntry.innerHTML = `
-                <input type="text" class="form-control mb-2" name="newSkillNames" placeholder="Enter new skill name">
-                <select class="form-select mb-2" name="newSkillLevels">
-                    <option value="1">Beginner</option>
-                    <option value="2">Intermediate</option>
-                    <option value="3">Advanced</option>
-                    <option value="4">Professional</option>
-                    <option value="5">Master</option>
-                </select>
-                <input type="text" class="form-control" name="newSkillMoreInfos" placeholder="Enter more information">
-            `;
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <strong>New Skill</strong>
+                <button type="button" class="btn btn-sm btn-danger remove-skill">Remove</button>
+            </div>
+            <input type="text" class="form-control mb-2" name="newSkillNames" placeholder="Enter new skill name" required>
+            <select class="form-select mb-2" name="newSkillLevels" required>
+                <option value="1">Beginner</option>
+                <option value="2">Intermediate</option>
+                <option value="3">Advanced</option>
+                <option value="4">Professional</option>
+                <option value="5">Master</option>
+            </select>
+            <input type="text" class="form-control" name="newSkillMoreInfos" placeholder="Enter more information">
+        `;
 
         // Thêm trường mới vào khu vực hiển thị kỹ năng
         newSkillsSection.appendChild(newSkillEntry);
     });
+
+    // Event delegation để xử lý nút "Remove"
+    document.getElementById('newSkillsSection').addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-skill')) {
+            const skillEntry = e.target.closest('.new-skill-entry');
+            if (skillEntry) {
+                skillEntry.remove();
+            }
+        }
+    });
 </script>
+
 </body>
 
 </html>
