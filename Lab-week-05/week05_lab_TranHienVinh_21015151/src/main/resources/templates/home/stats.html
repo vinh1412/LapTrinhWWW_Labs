@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Thống kê</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/9631/9631363.png" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -59,6 +60,12 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        /* Nút được chọn */
+        .btn.active {
+            background: linear-gradient(135deg, #28a745, #218838); /* Màu xanh đậm */
+            box-shadow: 0px 4px 10px rgba(0, 128, 0, 0.3);
+            color: #ffffff;
+        }
 
         .chart-container {
             width: 90%;
@@ -163,8 +170,21 @@
         }
     });
 
+    // Lấy danh sách tất cả các nút
+    const buttons = document.querySelectorAll('.btn');
+
+    function setActiveButton(clickedButton) {
+        // Loại bỏ lớp 'active' khỏi tất cả các nút
+        buttons.forEach(button => button.classList.remove('active'));
+
+        // Thêm lớp 'active' vào nút được nhấn
+        clickedButton.classList.add('active');
+    }
+
     // Chuyển đổi biểu đồ
     function showJobSkillsChart() {
+        setActiveButton(document.querySelector('button[onclick="showJobSkillsChart()"]')); // Đặt nút này là 'active'
+
         dynamicChart.data.labels = jobSkillsLabels;
         dynamicChart.data.datasets[0].data = jobSkillsCounts;
         dynamicChart.data.datasets[0].label = 'Số lượng công việc yêu cầu';
@@ -173,6 +193,8 @@
     }
 
     function showCandidateSkillsChart() {
+        setActiveButton(document.querySelector('button[onclick="showCandidateSkillsChart()"]')); // Đặt nút này là 'active'
+
         dynamicChart.data.labels = candidateSkillsLabels;
         dynamicChart.data.datasets[0].data = candidateSkillsCounts;
         dynamicChart.data.datasets[0].label = 'Số lượng ứng viên có';
