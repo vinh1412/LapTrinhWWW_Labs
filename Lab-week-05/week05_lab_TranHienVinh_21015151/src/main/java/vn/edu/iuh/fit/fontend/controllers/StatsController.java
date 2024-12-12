@@ -25,7 +25,7 @@ import java.util.Map;
 @RequestMapping("/stats")
 public class StatsController {
     @Autowired
-    private StatsService statsService;
+    private StatsService statsService;  
 
     @GetMapping
     public String showStats(Model model) {

@@ -61,7 +61,7 @@ public class HomeController {
             model.addAttribute("email", email);
             return "redirect:/jobs/list"; // tra ve request /jobs/list
         }
-        model.addAttribute("error", "Không tìm thấy ứng viên hoặc công ty với email: " + email);
+        model.addAttribute("error", "No candidate or company found with email: " + email);
         return "home/login"; // Trang login
     }
     // Xử lý đăng xuất
