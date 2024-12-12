@@ -46,6 +46,16 @@ public class CompanyController {
             RedirectAttributes redirectAttributes) {
 
         try {
+            if (companyService.existsByEmail(company.getEmail())) {
+                // Thêm thông báo lỗi nếu email đã tồn tại
+                redirectAttributes.addFlashAttribute("errorMessage", "Email already exists!");
+                return "redirect:/companies/register";
+            }
+            if (companyService.existsByPhone(company.getPhone())) {
+                // Thêm thông báo lỗi nếu số điện thoại đã tồn tại
+                redirectAttributes.addFlashAttribute("errorMessage", "Phone number already exists!");
+                return "redirect:/companies/register";
+            }
             // Lưu thông tin công ty vào cơ sở dữ liệu
             companyService.save(company);
 

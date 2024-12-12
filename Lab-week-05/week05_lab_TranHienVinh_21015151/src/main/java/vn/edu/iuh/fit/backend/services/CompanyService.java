@@ -42,4 +42,10 @@ public class CompanyService {
 
         return companyRepository.save(company);
     }
+    public boolean existsByEmail(String email) {
+        return companyRepository.existsByEmail(email);
+    }
+    public boolean existsByPhone(String phone) {
+        return companyRepository.existsByPhone(phone);
+    }
 }

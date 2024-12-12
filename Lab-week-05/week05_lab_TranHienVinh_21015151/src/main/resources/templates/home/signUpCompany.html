@@ -90,6 +90,8 @@
         <h1 class="form-title">
             <i class="bi bi-building"></i> Register Company
         </h1>
+        <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+        <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
         <form th:action="@{/companies/register}" th:object="${company}" method="post">
             <div class="form-group">
                 <label for="compName" class="form-label">Company Name</label>

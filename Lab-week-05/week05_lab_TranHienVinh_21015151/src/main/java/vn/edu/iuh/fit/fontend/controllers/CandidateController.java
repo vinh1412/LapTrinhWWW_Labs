@@ -104,6 +104,13 @@ public class CandidateController {
             redirectAttributes.addFlashAttribute("errorMessage", "Email already exists!");
             return "redirect:/signup"; // Quay lại trang đăng ký
         }
+
+        // Kiểm tra tên đã tồn tại
+        if (candidateService.existsByFullName(candidate.getFullName())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Full name already exists!");
+            return "redirect:/signup"; // Quay lại trang đăng ký
+        }
+
         // Khởi tạo danh sách CandidateSkill nếu chưa có
         if (candidate.getCandidateSkills() == null) {
             candidate.setCandidateSkills(new ArrayList<>());

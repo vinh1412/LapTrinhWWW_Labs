@@ -67,6 +67,9 @@ public class CandidateService {
     public boolean existsByEmail(String email) {
         return candidateRepository.existsByEmail(email);
     }
+    public boolean existsByFullName(String fullName) {
+        return candidateRepository.existsByFullName(fullName);
+    }
     public void save(Candidate candidate) {
         Address address = candidate.getAddress();
         addressRepository.save(address);
