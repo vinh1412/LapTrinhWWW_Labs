@@ -33,5 +33,6 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
     boolean existsByPhone(String phone);
     // Kiểm tra email đã tồn tại chưa
     boolean existsByEmail(String email);
+    // Kiểm tra tên đã tồn tại chưa
     boolean existsByFullName(String fullName);
 }

@@ -25,9 +25,11 @@ public class JobSkillService {
     @Autowired
     private JobSkillRepository jobSkillRepository;
 
+    // Lưu thông tin kỹ năng công việc
     public void save(JobSkill jobSkill) {
         jobSkillRepository.save(jobSkill);
     }
+    // Tìm kỹ năng công việc theo công việc
     public List<JobSkill> findByJob(Job job) {
         return jobSkillRepository.findByJob(job);
     }

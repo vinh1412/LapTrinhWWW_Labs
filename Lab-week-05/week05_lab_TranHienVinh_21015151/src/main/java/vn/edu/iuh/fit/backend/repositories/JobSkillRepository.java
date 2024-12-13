@@ -26,5 +26,6 @@ public interface JobSkillRepository extends JpaRepository<JobSkill, Long> {
     // Tim cac ky nang cua cong viec theo cong viec
     List<JobSkill> findByJob(Job job);
     @Query("SELECT js.skill.skillName, COUNT(js) FROM JobSkill js GROUP BY js.skill.skillName ORDER BY COUNT(js) DESC")
+    // Tim cac ky nang co so luong cong viec co ky nang do nhieu nhat
     List<Object[]> findTopSkillsInJobs();
 }

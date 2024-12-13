@@ -41,5 +41,6 @@ public interface JobRepository extends JpaRepository<Job, Long> {
             "WHERE j.company.id = :companyId " +
             "AND (LOWER(j.jobName) LIKE LOWER(CONCAT('%', :query, '%')) " +
             "OR LOWER(js.skill.skillName) LIKE LOWER(CONCAT('%', :query, '%')))")
+    // Tìm các công việc theo tên công việc hoặc tên kỹ năng
     List<Job> searchByJobNameOrSkillName(@Param("query") String query, @Param("companyId") Long companyId);
 }

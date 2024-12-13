@@ -30,24 +30,27 @@ import java.util.stream.Collectors;
 public class SkillService {
     @Autowired
     private SkillRepository skillRepository;
-    @Autowired
-    private CandidateSkillRepository candidateSkillRepository;
+    // Tìm tất cả kỹ năng và lấy ra 5 kỹ năng
     public List<Skill> findAll() {
         return skillRepository.findAll().stream()
                 .sorted(Comparator.comparing(Skill::getId))
                 .limit(5)
                 .collect(Collectors.toList());
     }
+    // Tìm kỹ năng theo id
     public Skill findById(Long id) {
         return skillRepository.findById(id).orElse(null);
     }
+    // Gợi ý kỹ năng cho ứng viên dựa vào kỹ năng đã có của ứng viên
     public List<Skill> recommendSkillsForCandidate(Long candidateId) {
         Pageable pageable = PageRequest.of(0, 5);  // Lấy tối đa 5 kỹ năng
         return skillRepository.findSkillsNotInCandidateSkills(candidateId, pageable);
     }
+    // Lưu thông tin kỹ năng
     public void save(Skill skill) {
         skillRepository.save(skill);
     }
+    // Tìm kỹ năng theo tên
     public Skill findBySkillName(String skillName) {
         return skillRepository.findBySkillName(skillName);
     }

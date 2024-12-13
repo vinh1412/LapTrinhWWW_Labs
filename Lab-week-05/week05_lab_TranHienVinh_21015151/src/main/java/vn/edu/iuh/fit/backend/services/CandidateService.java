@@ -41,14 +41,17 @@ public class CandidateService {
     @Autowired
     private SkillService skillService;
 
+    // Tìm tất cả ứng viên theo trang
     public Page<Candidate> findAll(int pageNo, int pageSize, String sortBy, String sortDirection) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         return candidateRepository.findAll(pageable);
     }
+    // Tìm ứng viên theo email
     public Candidate findByEmail(String email) {
         return candidateRepository.findByEmail(email).orElse(null);
     }
+    // Tìm ứng viên phù hợp với công việc
     public List<Candidate> findCandidatesForJob(Job job) {
         List<Skill> requiredSkills = new ArrayList<>();
         // Lấy ra tất cả kỹ năng của công việc
@@ -57,25 +60,30 @@ public class CandidateService {
         }
         return candidateRepository.findCandidatesWithSkills(requiredSkills);
     }
-
+    // Tìm ứng viên theo id
     public Candidate findById(Long id) {
         return candidateRepository.findById(id).orElse(null);
     }
+    // Kiểm tra số điện thoại đã tồn tại chưa
     public boolean existsByPhone(String phone) {
         return candidateRepository.existsByPhone(phone);
     }
+    // Kiểm tra email đã tồn tại chưa
     public boolean existsByEmail(String email) {
         return candidateRepository.existsByEmail(email);
     }
+    // Kiểm tra tên đã tồn tại chưa
     public boolean existsByFullName(String fullName) {
         return candidateRepository.existsByFullName(fullName);
     }
+    // Lưu ứng viên
     public void save(Candidate candidate) {
         Address address = candidate.getAddress();
         addressRepository.save(address);
         candidate.setAddress(address);
         candidateRepository.save(candidate);
     }
+    // Cập nhật ứng viên
     public void saveCandidate(Candidate candidate) {
         Address address = candidate.getAddress();
         if (address != null) {
@@ -109,6 +117,7 @@ public class CandidateService {
         }
         candidateRepository.save(candidate);
     }
+    // Cập nhật ứng viên
     public void updateCandidate(Candidate candidate) {
         Address address = candidate.getAddress();
         if (address != null) {
@@ -140,63 +149,5 @@ public class CandidateService {
             experienceRepository.save(experience);
         }
         candidateRepository.save(candidate);
-    }
-
-    public void updateCandidateSkills(Candidate candidate, List<Long> skillIds, List<Byte> skillLevels,
-                                      List<String> newSkillNames, List<Byte> newSkillLevels) {
-
-        // Cập nhật các kỹ năng đã chọn
-        for (int i = 0; i < skillIds.size(); i++) {
-            Long skillId = skillIds.get(i);
-            Byte skillLevel = skillLevels.get(i);
-            Skill skill = skillService.findById(skillId);
-
-            // Tìm kỹ năng hiện tại của candidate nếu có
-            CandidateSkill existingCandidateSkill = candidateSkillRepository.findByCanIdAndSkillId(candidate.getId(), skill.getId());
-
-            if (existingCandidateSkill != null) {
-                // Cập nhật mức độ kỹ năng nếu có
-                existingCandidateSkill.setSkillLevel(skillLevel);
-                candidateSkillRepository.save(existingCandidateSkill); // Lưu lại thay đổi
-            } else {
-                // Nếu chưa có kỹ năng này, thêm mới
-                CandidateSkill candidateSkill = new CandidateSkill();
-                CandidateSkillId candidateSkillId = new CandidateSkillId();
-                candidateSkillId.setCanId(candidate.getId());
-                candidateSkillId.setSkillId(skill.getId());
-                candidateSkill.setId(candidateSkillId);
-                candidateSkill.setCan(candidate);
-                candidateSkill.setSkill(skill);
-                candidateSkill.setSkillLevel(skillLevel);
-
-                candidate.getCandidateSkills().add(candidateSkill);
-            }
-        }
-
-        // Thêm kỹ năng mới (nếu có)
-        if (newSkillNames != null) {
-            for (int i = 0; i < newSkillNames.size(); i++) {
-                String skillName = newSkillNames.get(i);
-                Byte skillLevel = (newSkillLevels != null && newSkillLevels.size() > i) ? newSkillLevels.get(i) : 1;
-
-                Skill newSkill = skillService.findBySkillName(skillName.trim());
-                if (newSkill == null) {
-                    newSkill = new Skill();
-                    newSkill.setSkillName(skillName);
-                    skillService.save(newSkill);
-                }
-
-                CandidateSkill candidateSkill = new CandidateSkill();
-                CandidateSkillId candidateSkillId = new CandidateSkillId();
-                candidateSkillId.setCanId(candidate.getId());
-                candidateSkillId.setSkillId(newSkill.getId());
-                candidateSkill.setId(candidateSkillId);
-                candidateSkill.setCan(candidate);
-                candidateSkill.setSkill(newSkill);
-                candidateSkill.setSkillLevel(skillLevel);
-
-                candidate.getCandidateSkills().add(candidateSkill);
-            }
-        }
     }
 }

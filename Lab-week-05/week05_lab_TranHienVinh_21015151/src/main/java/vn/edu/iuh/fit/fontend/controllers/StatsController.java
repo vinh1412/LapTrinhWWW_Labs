@@ -27,6 +27,7 @@ public class StatsController {
     @Autowired
     private StatsService statsService;  
 
+    // Hiển thị trang thống kê
     @GetMapping
     public String showStats(Model model) {
         Map<String, Long> topSkillsInJobs = statsService.getTopSkillsInJobs();

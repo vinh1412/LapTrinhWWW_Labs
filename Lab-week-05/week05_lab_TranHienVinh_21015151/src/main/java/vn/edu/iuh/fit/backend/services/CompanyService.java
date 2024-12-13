@@ -27,24 +27,26 @@ public class CompanyService {
     private CompanyRepository companyRepository;
     @Autowired
     private AddressRepository addressRepository;
-    public List<Company> findAll() {
-        return companyRepository.findAll();
-    }
+    // Tìm công ty theo id
     public Company findById(Long id) {
         return companyRepository.findById(id).orElse(null);
     }
+    // Tìm công ty theo email
     public Company findByEmail(String email) {
         return companyRepository.findByEmail(email).orElse(null);
     }
+    // Luu thông tin công ty
     public Company save(Company company) {
         Address address = company.getAddress();
         addressRepository.save(address);
 
         return companyRepository.save(company);
     }
+    // Kiểm tra email đã tồn tại chưa
     public boolean existsByEmail(String email) {
         return companyRepository.existsByEmail(email);
     }
+    // Kiểm tra số điện thoại đã tồn tại chưa
     public boolean existsByPhone(String phone) {
         return companyRepository.existsByPhone(phone);
     }

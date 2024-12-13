@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
-
+    // Gửi email mời từ email nhà tuyển dụng đến email ứng viên
     public void sendInvitationEmail(String toEmail, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("tranvinh141203@gmail.com");

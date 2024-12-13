@@ -20,6 +20,8 @@ import java.util.Optional;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     // Tìm công ty theo email
     Optional<Company> findByEmail(String email);
+    // Kiểm tra email đã tồn tại chưa
     boolean existsByEmail(String email);
+    // Kiểm tra số điện thoại đã tồn tại chưa
     boolean existsByPhone(String phone);
 }

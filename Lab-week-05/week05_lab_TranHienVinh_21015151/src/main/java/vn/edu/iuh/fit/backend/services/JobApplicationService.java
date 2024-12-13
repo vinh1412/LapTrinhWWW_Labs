@@ -26,12 +26,13 @@ import vn.edu.iuh.fit.backend.models.JobSkill;
 public class JobApplicationService {
     @Autowired
     private JavaMailSender mailSender;
+    // Gửi email ứng tuyển công việc
     public void sendApplication(String jobId, String applicantName, String email, String messageContent, Job job, Candidate candidate) throws MessagingException {
-        // Construct the email
+        // Lấy email của nhà tuyển dụng
         String toEmail = job.getCompany().getEmail();
         String subject = "New Job Application for Job ID: " + jobId;
 
-        // Create the email body with detailed candidate information
+        // Tạo nội dung email
         StringBuilder body = new StringBuilder();
         body.append("<html>")
                 .append("<head>")
@@ -76,7 +77,7 @@ public class JobApplicationService {
                 .append("</body>")
                 .append("</html>");
 
-        // Create a MimeMessage
+        // Tạo MimeMessage
         MimeMessage message = mailSender.createMimeMessage();
         message.setHeader("Content-Type", "text/html; charset=UTF-8");
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -84,7 +85,7 @@ public class JobApplicationService {
         helper.setSubject(subject);
         helper.setText(body.toString(), true); // Set to true to indicate that the content is HTML
 
-        // Send the email
+        // Gửi email
         mailSender.send(message);
     }
 

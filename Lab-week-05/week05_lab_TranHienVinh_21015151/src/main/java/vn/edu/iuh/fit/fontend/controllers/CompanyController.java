@@ -30,6 +30,7 @@ import java.util.List;
 public class CompanyController {
     @Autowired
     private CompanyService companyService;
+    // Hiển thị trang đăng ký công ty
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("company", new Company());
@@ -40,6 +41,7 @@ public class CompanyController {
 
         return "home/signUpCompany";
     }
+    // XỬ lý đăng ký công ty
     @PostMapping("/register")
     public String registerCompany(
             @ModelAttribute("company") Company company,
@@ -73,6 +75,7 @@ public class CompanyController {
             return "home/signUpCompany";
         }
     }
+    // Hiển thị trang chỉnh sửa thông tin công ty
     @GetMapping("/edit/{id}")
     public String showEditCompanyForm(@PathVariable("id") Long id, Model model) {
         Company company = companyService.findById(id);
@@ -87,6 +90,7 @@ public class CompanyController {
 
         return "companies/form-edit-company";
     }
+    // Xử lý chỉnh sửa thông tin công ty
     @PostMapping("/edit/{id}")
     public String editCompany(
             @PathVariable Long id,

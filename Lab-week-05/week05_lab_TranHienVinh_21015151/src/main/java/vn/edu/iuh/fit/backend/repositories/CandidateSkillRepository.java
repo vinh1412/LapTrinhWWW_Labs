@@ -25,7 +25,9 @@ import java.util.List;
 public interface CandidateSkillRepository extends JpaRepository<CandidateSkill, CandidateSkillId> {
     //Tim cac ky nang cua ung vien theo id ung vien va id ky nang
     CandidateSkill findByCanIdAndSkillId(Long canId, Long skillId);
+    //Tim cac ky nang cua ung vien theo id ung vien
     List<CandidateSkill> findByCanId(Long canId);
     @Query("SELECT cs.skill.skillName, COUNT(cs) FROM CandidateSkill cs GROUP BY cs.skill.skillName ORDER BY COUNT(cs) DESC")
+    //Tim cac ky nang co so luong ung vien co ky nang do nhieu nhat
     List<Object[]> findTopSkillsInCandidates();
 }

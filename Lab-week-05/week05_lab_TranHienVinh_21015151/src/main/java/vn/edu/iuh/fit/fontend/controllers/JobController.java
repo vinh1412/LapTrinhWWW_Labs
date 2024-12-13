@@ -307,6 +307,7 @@ public class JobController {
         return "redirect:/jobs/list";
     }
 
+    // Tìm kiếm công việc theo tên công việc hoặc tên công ty hoặc kỹ năng
     @GetMapping("/search")
     public String searchJobs(
             @RequestParam("query") String query,
@@ -320,6 +321,7 @@ public class JobController {
         model.addAttribute("query", query);
         return "companies/dashboard-company";
     }
+    // Hiển thị form ứng tuyển công việc
     @GetMapping("/apply/{id}")
     public String showApplicationForm(@PathVariable Long id, @SessionAttribute("email") String email, Model model) {
         Job job = jobService.findById(id);
@@ -329,7 +331,7 @@ public class JobController {
         model.addAttribute("candidate", candidate);
         return "candidates/apply";
     }
-
+    // Xử lý gửi ứng tuyển
     @PostMapping("apply/sendApply")
     public String submitApplication(@RequestParam String jobId,
                                     @RequestParam String applicantName,
@@ -337,17 +339,17 @@ public class JobController {
                                     @RequestParam String message,
                                     RedirectAttributes redirectAttributes) {
         try {
-            // Retrieve the job based on the jobId
+            // Tìm công việc theo id
             Job job = jobService.findById(Long.parseLong(jobId));
 
-            // Optionally, retrieve the candidate based on their email or other attributes
+            // Tìm ứng viên theo email
             Candidate candidate = candidateService.findByEmail(email);
             if (candidate == null) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Candidate not found.");
                 return "redirect:/jobs/apply/" + jobId;
             }
 
-            // Send the application with detailed candidate information
+            // Gửi hồ sơ kèm thông tin ứng viên chi tiết
             jobApplicationService.sendApplication(jobId, applicantName, email, message, job, candidate);
 
             redirectAttributes.addFlashAttribute("successMessage", "Your application has been sent successfully!");

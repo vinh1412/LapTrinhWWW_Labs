@@ -29,7 +29,7 @@ public class StatsService {
 
     @Autowired
     private CandidateSkillRepository candidateSkillRepository;
-
+    // Lấy ra top kỹ năng được yêu cầu nhiều nhất trong các công việc
     public Map<String, Long> getTopSkillsInJobs() {
         List<Object[]> results = jobSkillRepository.findTopSkillsInJobs();
         return results.stream()
@@ -41,7 +41,7 @@ public class StatsService {
                         LinkedHashMap::new // Giữ thứ tự đã sắp xếp
                 ));
     }
-
+    // Lấy ra top kỹ năng mà ứng viên có nhiều nhất
     public Map<String, Long> getTopSkillsInCandidates() {
         List<Object[]> results = candidateSkillRepository.findTopSkillsInCandidates();
         return results.stream()
