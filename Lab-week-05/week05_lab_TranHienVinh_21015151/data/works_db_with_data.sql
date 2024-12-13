@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS `address` (
   `number` varchar(20) DEFAULT NULL,
   `zipcode` varchar(7) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1020 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1079 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table works.address: ~1,017 rows (approximately)
+-- Dumping data for table works.address: ~1,012 rows (approximately)
 INSERT INTO `address` (`id`, `street`, `city`, `country`, `number`, `zipcode`) VALUES
 	(1, 'Quang Trung', 'HCM', 704, '887', '76184'),
 	(2, 'Quang Trung', 'HCM', 704, '810', '70426'),
@@ -1042,7 +1042,7 @@ INSERT INTO `address` (`id`, `street`, `city`, `country`, `number`, `zipcode`) V
 	(1008, 'Bui Vien', 'HCM', 704, '1414', '76008'),
 	(1009, 'Vuon Lai', 'HCM', 704, '1414', '71069'),
 	(1010, 'Phu Nhuan', 'HCM', 704, NULL, '75191'),
-	(1011, 'KP', 'HCM', 704, NULL, '74647'),
+	(1011, 'KP', 'HCM', 704, '1414', '74647'),
 	(1012, 'Bien Hoa', 'HCM', 704, NULL, '73666'),
 	(1013, 'Bien Hoa', 'HCM', 704, NULL, '73666'),
 	(1014, 'Liem Anh', 'HCM', 704, '1414', '73333'),
@@ -1050,7 +1050,65 @@ INSERT INTO `address` (`id`, `street`, `city`, `country`, `number`, `zipcode`) V
 	(1016, 'dsgsg', 'HCM', 704, '1414', '3432432'),
 	(1017, 'dsgsg', 'HCM', 704, '1414', '3432432'),
 	(1018, 'dsgsg', 'HCM', 704, '1414', '3432432'),
-	(1019, 'Le Lai', 'HCM', 704, '1414', '77009');
+	(1019, 'Le Lai', 'HCM', 704, '1414', '77009'),
+	(1020, 'Bien Hoa', 'HCM', 704, '1414', '73333'),
+	(1021, 'Long An', 'HCM', 704, '1414', '73484'),
+	(1022, 'Long An', 'HCM', 704, '1414', '73484'),
+	(1023, 'Le Lai', 'Nha Trang', 704, '1414', '57325'),
+	(1024, 'Le Lai', 'Nha Trang', 704, '1414', '57325'),
+	(1025, 'Le Loi', 'Nha Trang', 704, '1414', '57325'),
+	(1026, 'Le Loi', 'Nha Trang', 704, '1414', '57325'),
+	(1027, 'Le Lai', 'HCM', 704, '1414', '57325'),
+	(1028, 'Le Lai1', 'HCM', 704, '1414', '57325'),
+	(1029, 'Le Lai1', 'HCM', 704, '1414', '57325'),
+	(1030, 'Quang Trung', 'HCM', 704, '78543', '112334'),
+	(1031, 'Quang Trung1', 'HCM', 704, '78543', '112334'),
+	(1032, 'Quang Trung1', 'HCM', 704, '78543', '112334'),
+	(1033, 'Quang Trung1', 'HCM', 704, '78543', '112334'),
+	(1034, 'Quang Trung1', 'HCM', 704, '78543', '112334'),
+	(1035, 'Quang Trung1', 'HCM', 704, '78543', '112334'),
+	(1036, 'Quang Trung1', 'HCM', 704, '78543', '112334'),
+	(1037, 'Quang Trung1', 'HCM', 704, '78543', '112334'),
+	(1038, 'Nguyen Hue', 'Ha Noi', 704, '1414', '14553'),
+	(1039, 'Nguyen Hue', 'Ha Noi', 704, '1414', '14553'),
+	(1040, 'An Phu Dong', 'HCM', 704, '1414', '1234'),
+	(1042, 'An Phu Dong', 'HCM', 704, '1414', '1234'),
+	(1043, 'An Phu Dong1', 'HCM', 704, '1414', '1234'),
+	(1044, 'An Phu Dong1', 'HCM', 704, '1414', '1234'),
+	(1045, 'An Phu Dong1', 'HCM', 704, '1414', '1234'),
+	(1046, 'An Phu Dong2', 'HCM', 704, '1414', '1234'),
+	(1047, 'An Phu Dong2', 'HCM', 704, '1414', '1234'),
+	(1048, 'Pham Ngu Lao', 'HCM', 704, '1414', '43412'),
+	(1049, 'Le Lai', 'HCM', 704, '1414', '1234'),
+	(1050, 'Le Lai', 'HCM', 704, '1414', '1234'),
+	(1051, 'Long An', 'HCM', 704, '1414', '57325'),
+	(1052, 'Le Loi', 'Nha Trang', 704, '1414', '57325'),
+	(1053, 'Le Loi', 'Nha Trang', 704, '1414', '57325'),
+	(1054, 'Le Loi', 'Nha Trang', 704, '1414', '57325'),
+	(1055, 'Le Loi', 'Nha Trang', 704, '1414', '57325'),
+	(1056, 'Le Loi', 'Nha Trang', 704, '1414', '57325'),
+	(1057, 'Le Loi', 'Nha Trang', 704, '1414', '57325'),
+	(1058, 'Le Loi', 'Nha Trang', 704, '1414', '57325'),
+	(1059, 'Le Loi1', 'Nha Trang1', 704, '14141', '573251'),
+	(1060, 'Le Loi1', 'Nha Trang1', 704, '14141', '573251'),
+	(1061, 'Le Loi1', 'Nha Trang1', 704, '14141', '573251'),
+	(1062, 'Le Loi1', 'Nha Trang1', 704, '14141', '573251'),
+	(1063, 'Le Loi1', 'Nha Trang1', 704, '14141', '573251'),
+	(1064, 'Le Loi1', 'Nha Trang1', 704, '14141', '573251'),
+	(1065, 'Le Loi1', 'Nha Trang1', 860, '14141', '573251'),
+	(1066, 'Le Lai', 'HCM', 16, '1414', '1114'),
+	(1067, 'Le Lai', 'Nha Trang', 704, '1414', '57325'),
+	(1068, 'Le Lai', 'Nha Trang', 704, '1414', '57325'),
+	(1069, 'Le Lai', 'HCM', 36, '78543', '1112'),
+	(1070, 'Le Lai', 'Nha Trang', 704, '1414', '57325'),
+	(1071, 'Nguyen Van Luong', 'HCM', 704, '1144', '1134'),
+	(1072, 'La Van Cau', 'HCM', 704, '9876', '7000'),
+	(1073, 'Quang Trung', 'HCM', 704, '59', '79998'),
+	(1074, 'Le Loi', 'HCM', 704, '132', '7000'),
+	(1075, 'Ung Van Khiem', 'HCM', 704, '115', '71000'),
+	(1076, 'Quang Trung', 'HCM', 704, '59', '79998'),
+	(1077, 'Quang Trung', 'HCM', 704, '59', '79998'),
+	(1078, 'Quang Trung', 'HCM', 704, '59', '79998');
 
 -- Dumping structure for table works.candidate
 CREATE TABLE IF NOT EXISTS `candidate` (
@@ -1065,9 +1123,9 @@ CREATE TABLE IF NOT EXISTS `candidate` (
   UNIQUE KEY `UK_9i5yt1gvm0chg5e10qkns7tll` (`phone`),
   UNIQUE KEY `UK_m8qhlm4wu215gr34dhxp0dour` (`address`),
   CONSTRAINT `FKa8gnyyhbb2qnhp94grci1n0o9` FOREIGN KEY (`address`) REFERENCES `address` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1023 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1033 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table works.candidate: ~1,011 rows (approximately)
+-- Dumping data for table works.candidate: ~1,004 rows (approximately)
 INSERT INTO `candidate` (`id`, `dob`, `email`, `full_name`, `phone`, `address`) VALUES
 	(1, '1998-11-15', 'email_1@gmail.com', 'Name #1', '3312790458', 1),
 	(2, '1998-10-13', 'email_2@gmail.com', 'Name #2', '1575326931', 2),
@@ -2082,7 +2140,17 @@ INSERT INTO `candidate` (`id`, `dob`, `email`, `full_name`, `phone`, `address`) 
 	(1017, '2024-11-01', 'sdgsfg@gmail.com', 'dgdsgs', '0514984656', 1014),
 	(1018, '2024-11-01', 'fdsfds@gmail.com', 'dfdf', '0525257275', 1015),
 	(1019, '2024-11-01', 'sdgsfg111@gmail.com', 'sdfdsf1', '0227575757', 1016),
-	(1022, '2024-10-31', 'Test0091@gmail.com', 'dsgsf', '0645874788', 1019);
+	(1022, '2024-10-31', 'Test0091@gmail.com', 'dsgsf', '0645874788', 1019),
+	(1023, '2024-11-01', 'Test010@gmail.com', 'Test010', '0435325582', 1039),
+	(1024, '2024-11-01', 'Test011@gmail.com', 'Test011', '0948946467', 1045),
+	(1025, '2024-11-01', 'Test012@gmail.com', 'Test012', '0948946468', 1047),
+	(1026, '2024-11-02', 'Test013@gmail.com', 'Test013', '0455555879', 1048),
+	(1027, '2024-11-16', 'Test014@gmail.com', 'Test014', '0487948488', 1050),
+	(1028, '2024-12-15', 'Test015@gmail.com', 'Test015', '0545465946', 1066),
+	(1029, '2024-12-01', 'test016@gmail.com', 'Test016', '0862051111', 1068),
+	(1030, '2024-12-08', 'Test017@gmail.com', 'Test017', '0564154567', 1069),
+	(1031, '2024-12-12', 'thule123@gmail.com', 'Le Thi Thu', '0548949415', 1071),
+	(1032, '2018-02-17', 'vinh1412032@gmail.com', 'Tran Hien Vinh', '0377554454', 1074);
 
 -- Dumping structure for table works.candidate_skill
 CREATE TABLE IF NOT EXISTS `candidate_skill` (
@@ -2097,29 +2165,51 @@ CREATE TABLE IF NOT EXISTS `candidate_skill` (
   CONSTRAINT `skill_level` CHECK (`skill_level` between 0 and 5)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table works.candidate_skill: ~20 rows (approximately)
+-- Dumping data for table works.candidate_skill: ~43 rows (approximately)
 INSERT INTO `candidate_skill` (`more_infos`, `skill_id`, `can_id`, `skill_level`) VALUES
-	(NULL, 1, 100, 1),
-	(NULL, 12, 100, 5),
+	('More info', 1, 100, 5),
+	('More info', 10, 100, 2),
+	('More info', 12, 100, 5),
 	('More info', 10, 102, 4),
-	(NULL, 12, 957, 5),
-	(NULL, 10, 1010, 1),
-	(NULL, 1, 1011, 2),
-	(NULL, 8, 1011, 1),
-	(NULL, 12, 1011, 5),
-	(NULL, 1, 1012, 3),
-	(NULL, 16, 1012, 5),
-	(NULL, 2, 1013, 1),
-	(NULL, 11, 1013, 4),
-	(NULL, 2, 1014, 3),
-	(NULL, 12, 1014, 2),
-	(NULL, 13, 1014, 1),
-	(NULL, 14, 1015, 5),
-	(NULL, 7, 1017, 5),
-	(NULL, 15, 1017, 2),
-	(NULL, 16, 1017, 5),
-	(NULL, 3, 1018, 5),
-	(NULL, 1, 1019, 5);
+	('More info', 12, 957, 5),
+	('More info', 10, 1010, 1),
+	('More info', 1, 1011, 2),
+	('More info', 8, 1011, 1),
+	('More info', 12, 1011, 5),
+	('More info', 1, 1012, 3),
+	('More info', 16, 1012, 5),
+	('More info', 2, 1013, 1),
+	('More info', 11, 1013, 4),
+	('More info', 1, 1014, 2),
+	('More info', 2, 1014, 3),
+	('More info', 12, 1014, 2),
+	('More info', 13, 1014, 1),
+	('More info', 14, 1015, 5),
+	('More info', 7, 1017, 5),
+	('More info', 15, 1017, 2),
+	('More info', 16, 1017, 5),
+	('More info', 3, 1018, 5),
+	('More info', 1, 1019, 5),
+	('More info', 12, 1024, 3),
+	('More info', 2, 1025, 1),
+	('More info', 14, 1025, 5),
+	('More info', 16, 1026, 2),
+	('More info', 1, 1027, 2),
+	('More info', 9, 1027, 3),
+	('More info', 12, 1027, 2),
+	('More info', 17, 1027, 1),
+	('More info', 1, 1028, 3),
+	('More info', 12, 1028, 3),
+	('More info', 1, 1029, 1),
+	('More info', 1, 1030, 5),
+	('More info', 1, 1031, 1),
+	('More info', 10, 1031, 5),
+	('More info', 11, 1031, 5),
+	('More info', 12, 1031, 3),
+	('More info', 15, 1031, 5),
+	(NULL, 1, 1032, 5),
+	('More info', 15, 1032, 2),
+	('More info', 18, 1032, 2);
 
 -- Dumping structure for table works.company
 CREATE TABLE IF NOT EXISTS `company` (
@@ -2133,12 +2223,12 @@ CREATE TABLE IF NOT EXISTS `company` (
   PRIMARY KEY (`comp_id`),
   UNIQUE KEY `UK_rvp2hunsq4sgmpxe3a7i1ym3m` (`address`),
   CONSTRAINT `FKd5occp4cjwihejbxdbpvkp5tv` FOREIGN KEY (`address`) REFERENCES `address` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table works.company: ~99 rows (approximately)
+-- Dumping data for table works.company: ~104 rows (approximately)
 INSERT INTO `company` (`comp_id`, `about`, `email`, `comp_name`, `phone`, `web_url`, `address`) VALUES
 	(7, 'About company 1', 'company1@gmail.com', 'Company 1', '090000001', 'http://company1.com', 589),
-	(8, 'About company 2', 'company2@gmail.com', 'CONG TY TNHH THV14 VIET NAM', '090000002', 'http://company2.com', 995),
+	(8, 'About company', 'tranvinh141203@gmail.com', 'CONG TY TNHH THV14 VIET NAM', '090000002', 'http://company12.com', 1078),
 	(9, 'About company 3', 'company3@gmail.com', 'Company 3', '090000003', 'http://company3.com', 155),
 	(10, 'About company 4', 'company4@gmail.com', 'Company 4', '090000004', 'http://company4.com', 39),
 	(11, 'About company 5', 'company5@gmail.com', 'Company 5', '090000005', 'http://company5.com', 296),
@@ -2235,7 +2325,12 @@ INSERT INTO `company` (`comp_id`, `about`, `email`, `comp_name`, `phone`, `web_u
 	(102, 'About company 96', 'company96@gmail.com', 'Company 96', '0900000096', 'http://company96.com', 54),
 	(103, 'About company 97', 'company97@gmail.com', 'Company 97', '0900000097', 'http://company97.com', 430),
 	(104, 'About company 98', 'company98@gmail.com', 'Company 98', '0900000098', 'http://company98.com', 993),
-	(105, 'About company 99', 'company99@gmail.com', 'Company 99', '0900000099', 'http://company99.com', 517);
+	(105, 'About company 99', 'company99@gmail.com', 'Company 99', '0900000099', 'http://company99.com', 517),
+	(106, 'About company 100', 'company100@gmail.com', 'Company 100', '0900000100', 'http://company100.com', 1051),
+	(107, 'abc1', 'company101@gmail.com', 'Company 101', '0900000101', 'http://company101111.com', 1065),
+	(108, 'abcd', 'company102@gmail.com', 'Company 102', '0154544515', 'http://company102.com', 1070),
+	(109, 'Chuyen san xuat phan mem', 'pl123@gmai.com', 'Cong Ty TNHH PL', '0264984817', 'http://pl123.com', 1072),
+	(110, 'Company', 'tranvinh1412031@gmail.com', 'Cong Ty TNHH THV14 VIET NAM', '0988945454', 'http://thv14.com', 1075);
 
 -- Dumping structure for table works.experience
 CREATE TABLE IF NOT EXISTS `experience` (
@@ -2249,7 +2344,7 @@ CREATE TABLE IF NOT EXISTS `experience` (
   PRIMARY KEY (`exp_id`),
   KEY `FK_Experience_Candidate` (`can_id`),
   CONSTRAINT `FK_Experience_Candidate` FOREIGN KEY (`can_id`) REFERENCES `candidate` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Dumping data for table works.experience: ~35 rows (approximately)
 INSERT INTO `experience` (`exp_id`, `from_date`, `to_date`, `can_id`, `role`, `company`, `work_desc`) VALUES
@@ -2266,30 +2361,28 @@ INSERT INTO `experience` (`exp_id`, `from_date`, `to_date`, `can_id`, `role`, `c
 	(11, '2024-11-01', '2024-11-15', 1013, 'Inter', 'CT004', 'CT004'),
 	(12, '2024-11-01', '2024-11-30', 1013, 'Master', 'CT005', 'CT005'),
 	(13, '2024-11-01', '2024-11-30', 1014, 'Inter', 'CT003', 'CT003'),
-	(15, NULL, NULL, 1018, '', '', ''),
-	(16, NULL, NULL, 1019, '', '', ''),
-	(17, NULL, NULL, 1022, '', '', ''),
 	(21, '2024-11-01', '2024-11-30', 1017, 'Inter', 'CT0071', 'CT007'),
-	(22, NULL, NULL, 1017, '', '', ''),
-	(23, NULL, NULL, 1017, '', '', ''),
-	(24, NULL, NULL, 1017, '', '', ''),
-	(25, NULL, NULL, 1017, NULL, NULL, NULL),
-	(26, NULL, NULL, 1017, NULL, NULL, NULL),
-	(27, NULL, NULL, 1017, NULL, NULL, NULL),
-	(28, NULL, NULL, 1017, NULL, NULL, NULL),
-	(29, NULL, NULL, 1017, NULL, NULL, NULL),
-	(30, NULL, NULL, 1017, NULL, NULL, NULL),
-	(31, NULL, NULL, 1017, NULL, NULL, NULL),
-	(32, NULL, NULL, 1017, NULL, NULL, NULL),
-	(33, NULL, NULL, 1017, NULL, NULL, NULL),
-	(34, NULL, NULL, 1017, NULL, NULL, NULL),
-	(35, NULL, NULL, 1017, NULL, NULL, NULL),
-	(36, NULL, NULL, 1017, NULL, NULL, NULL),
 	(37, '2024-11-14', '2024-11-30', 1012, 'Master', 'CT0031', 'CT003'),
 	(38, '2024-11-03', '2024-11-08', 1011, 'Master', 'CT0221', 'CT022'),
 	(39, '2024-11-22', '2024-11-30', 1011, 'Inter', 'CT023', 'CT023'),
-	(40, '2024-11-01', '2024-11-30', 100, 'Inter', 'CT01', 'CT01'),
-	(41, '2024-11-02', '2024-11-30', 957, 'Inter', 'ABC', 'ABC');
+	(40, '2024-11-01', '2024-11-30', 100, 'Inter', 'CT011', 'abc'),
+	(41, '2024-11-02', '2024-11-30', 957, 'Inter', 'ABC', 'ABC'),
+	(42, '2024-11-08', '2024-11-30', 1024, 'Inter', 'CT01', 'CT01'),
+	(43, '2024-11-08', '2024-11-30', 1025, 'Inter', 'CT02', 'CT02'),
+	(44, '2024-11-08', '2024-11-30', 1026, 'Inter', 'CT2011', 'CT20'),
+	(45, '2024-11-02', '2024-11-24', 1026, 'Master', 'CT2111', 'CT21'),
+	(46, '2024-11-09', '2024-11-30', 1027, 'Inter', 'CT021111', 'CT021'),
+	(47, '2024-12-08', '2024-12-27', 1028, 'Inter', 'CT001', 'CT001'),
+	(48, '2024-12-08', '2024-12-28', 1029, 'Inter', 'Sinh viên', 'dfhfdh'),
+	(49, '2024-12-22', '2024-12-20', 1030, 'Inter', 'CTV1', 'CTV1'),
+	(50, '2024-12-01', '2024-12-29', 1031, 'Inter', 'Công ty TTHH Hien Vinh', 'test'),
+	(54, '2024-12-01', '2024-12-09', 1031, 'Maste', 'Công ty TTHH Hien Vinh1', 'test1'),
+	(61, '2024-12-01', '2024-12-09', 1031, 'Inter', 'Công ty TTHH Hien Vinh2', 'test2'),
+	(62, '2024-12-01', '2024-12-09', 1031, 'Inter', 'Công ty TTHH Hien Vinh3', 'test3'),
+	(63, '2024-12-01', '2024-12-10', 1031, 'Inter', 'Công ty TTHH Hien Vinh4', 'test4'),
+	(64, '2024-12-01', '2024-12-10', 1031, 'Master', 'Công ty TTHH Hien Vinh5', 'test51'),
+	(65, '2024-12-01', '2024-12-10', 1032, 'Inter', 'Cong Ty ADM', 'More info'),
+	(66, '2024-06-01', '2024-12-10', 1032, 'Inter', 'Cong ty PHD', 'More info');
 
 -- Dumping structure for table works.job
 CREATE TABLE IF NOT EXISTS `job` (
@@ -2300,43 +2393,46 @@ CREATE TABLE IF NOT EXISTS `job` (
   PRIMARY KEY (`job_id`),
   KEY `FKbaqlvluu78phmo9ld89um7wnm` (`company`),
   CONSTRAINT `FKbaqlvluu78phmo9ld89um7wnm` FOREIGN KEY (`company`) REFERENCES `company` (`comp_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table works.job: ~33 rows (approximately)
+-- Dumping data for table works.job: ~36 rows (approximately)
 INSERT INTO `job` (`job_id`, `job_desc`, `job_name`, `company`) VALUES
-	(1, 'JobDes01', 'Job01', 7),
-	(2, 'JobDes01', 'Job01', 7),
+	(1, 'Manufacturing Software Engineer', 'Manufacturing Software Engineer', 7),
+	(2, 'Senior/Expert Data Scientist', 'Senior/Expert Data Scientist', 7),
 	(3, 'Hiring Software Development Engineer/ Java Developer', 'Hiring Software Development Engineer/ Java Developer', 8),
-	(4, 'Job03', 'Job03', 9),
+	(4, 'Information Security Analyst', 'Information Security Analyst', 9),
 	(5, 'Hiring Data Analyst', 'Hiring Data Analyst', 8),
 	(6, 'Manufacturing Software Engineer', 'Manufacturing Software Engineer', 8),
-	(7, 'Job023', 'Job023', 8),
-	(8, 'Job024', 'Job024', 8),
-	(9, 'Job025', 'Job025', 8),
-	(10, 'Job026', 'Job026', 8),
-	(11, 'Job026', 'Job026', 8),
-	(12, 'Job027', 'Job027', 8),
-	(13, 'Job028', 'Job028', 8),
-	(14, 'Job029', 'Job029', 8),
-	(15, 'Job030', 'Job030', 8),
-	(16, 'Job031', 'Job031', 8),
-	(17, 'Job032', 'Job032', 8),
-	(18, 'Job033', 'Job033', 8),
-	(19, 'Job034', 'Job034', 8),
-	(20, 'Job035', 'Job035', 8),
-	(21, 'Job036', 'Job036', 8),
-	(22, 'Job037', 'Job037', 8),
-	(23, 'Job038', 'Job038', 8),
-	(24, 'Job039', 'Job039', 8),
-	(25, 'Job040', 'Job040', 8),
-	(26, 'Job041', 'Job041', 8),
-	(27, 'Job042', 'Job042', 8),
-	(28, 'Job043', 'Job043', 8),
-	(29, 'Job044', 'Job044', 8),
-	(30, 'Job045', 'Job045', 8),
-	(31, 'Job046', 'Job046', 8),
-	(32, 'Job047', 'Job047', 8),
-	(34, 'Job048', 'Job048', 8);
+	(9, '.NET Developer', '.NET Developer', 8),
+	(10, 'Senior Backend Developer (Java)', 'Senior Backend Developer (Java)', 8),
+	(11, 'Software Developer', 'Software Developer', 8),
+	(12, 'Innovation Program Manager', 'Innovation Program Manager', 8),
+	(13, 'Assistant MIS Manager', 'Assistant MIS Manager', 8),
+	(14, 'IT Developer', 'IT Developer', 8),
+	(15, 'Product Owner (PO)', 'Product Owner (PO)', 8),
+	(16, 'ERP Business Analyst & Operations Manager', 'ERP Business Analyst & Operations Manager', 8),
+	(17, 'Front end Developer', 'Front end Developer', 8),
+	(19, 'Quality Control – Tester Specialist', 'Quality Control – Tester Specialist', 8),
+	(20, 'DevOps Engineer', 'DevOps Engineer', 8),
+	(21, 'System Engineer', 'System Engineer', 8),
+	(22, '(Senior) IOT Device Support Engineer', '(Senior) IOT Device Support Engineer', 8),
+	(23, 'Sales Manager', 'Sales Manager', 8),
+	(24, 'Middle/ Senior NodeJS Developer', 'Middle/ Senior NodeJS Developer', 8),
+	(25, 'Customer Success Specialist (BPO/Outsourcing)', 'Customer Success Specialist (BPO/Outsourcing)', 8),
+	(26, 'Technical Project Manager', 'Technical Project Manager', 8),
+	(27, 'Data Platform Engineer', 'Data Platform Engineer', 8),
+	(28, 'Sales Manager/ Business Development Manager (Japanese Language/ Digital Solutions)', 'Sales Manager/ Business Development Manager (Japanese Language/ Digital Solutions)', 8),
+	(29, 'Head of IT Security', 'Head of IT Security', 8),
+	(30, 'Digital Transformation Manager', 'Digital Transformation Manager', 8),
+	(31, 'Senior Nodejs Backend Developer', 'Senior Nodejs Backend Developer', 8),
+	(32, 'Hybrid Mobile Engineer', 'Hybrid Mobile Engineer', 8),
+	(34, 'Senior Node.JS Developer (Back-end)', 'Senior Node.JS Developer (Back-end)', 8),
+	(35, 'Manual Tester', 'Manual Tester', 8),
+	(36, 'Data Analyst ', 'Data Analyst ', 8),
+	(37, 'Senior/Expert Data Engineer', 'Senior/Expert Data Engineer', 107),
+	(38, 'PRESALES ENGINEER', 'PRESALES ENGINEER', 8),
+	(39, 'Solution Architect - Hybrid working', 'Solution Architect - Hybrid working', 8),
+	(40, 'Senior IT Business Analyst - Trading Platform (Dstock)', 'Senior IT Business Analyst - Trading Platform (Dstock)', 8);
 
 -- Dumping structure for table works.job_skill
 CREATE TABLE IF NOT EXISTS `job_skill` (
@@ -2351,18 +2447,52 @@ CREATE TABLE IF NOT EXISTS `job_skill` (
   CONSTRAINT `skill_level` CHECK (`skill_level` between 0 and 5)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table works.job_skill: ~22 rows (approximately)
+-- Dumping data for table works.job_skill: ~70 rows (approximately)
 INSERT INTO `job_skill` (`more_infos`, `skill_level`, `job_id`, `skill_id`) VALUES
-	('abc', 5, 3, 1),
-	('edc', 1, 3, 2),
-	('', 1, 5, 1),
-	('', 4, 5, 2),
-	('', 5, 5, 3),
-	('', 4, 5, 9),
-	('', 5, 5, 10),
-	('', 5, 6, 2),
-	('', 5, 6, 3),
-	('', 5, 6, 4),
+	('More info', 5, 3, 1),
+	('More info', 1, 3, 2),
+	('More info', 5, 3, 3),
+	('More info', 5, 3, 10),
+	('More info', 3, 3, 11),
+	('More info', 2, 3, 15),
+	('More info', 1, 5, 1),
+	('More info', 4, 5, 2),
+	('More info', 5, 5, 3),
+	('More info', 4, 5, 9),
+	('More info', 5, 5, 10),
+	('More info', 5, 6, 2),
+	('More info', 5, 6, 3),
+	('More info', 5, 6, 4),
+	('More info', 2, 6, 10),
+	('More info', 3, 9, 17),
+	('More info', 5, 10, 10),
+	('More info', 2, 10, 11),
+	('More info', 3, 10, 15),
+	('More info', 1, 11, 1),
+	('More info', 3, 12, 12),
+	('More info', 4, 13, 10),
+	('More info', 4, 13, 15),
+	('More info', 5, 14, 10),
+	('More info', 4, 14, 18),
+	('More info', 4, 15, 12),
+	('More info', 3, 16, 8),
+	('More info', 3, 17, 14),
+	('More info', 1, 19, 9),
+	('More info', 4, 19, 17),
+	('More info', 1, 20, 10),
+	('More info', 3, 21, 12),
+	('More info', 5, 22, 18),
+	('More info', 2, 23, 15),
+	('More info', 1, 23, 17),
+	('More info', 2, 24, 15),
+	('More info', 4, 25, 18),
+	('More info', 3, 26, 17),
+	('More info', 3, 27, 2),
+	('More info', 5, 27, 12),
+	('More info', 4, 28, 10),
+	('More info', 5, 28, 17),
+	('More info', 4, 29, 11),
+	('More info', 2, 29, 15),
 	('More info', 5, 30, 1),
 	('More info', 1, 30, 2),
 	('More info', 1, 31, 1),
@@ -2373,8 +2503,22 @@ INSERT INTO `job_skill` (`more_infos`, `skill_level`, `job_id`, `skill_id`) VALU
 	('More info', 5, 32, 1),
 	('More info', 3, 32, 3),
 	('More info', 4, 32, 4),
-	('abc', 4, 34, 8),
-	('11111', 1, 34, 10);
+	('More info', 4, 34, 8),
+	('More info', 1, 34, 10),
+	('More info', 1, 35, 9),
+	('More info', 3, 35, 16),
+	('More info', 1, 36, 15),
+	('More info', 3, 36, 17),
+	('More info', 1, 37, 3),
+	('More info', 5, 37, 4),
+	('More info', 3, 38, 5),
+	('More info', 2, 38, 6),
+	('More info', 5, 38, 7),
+	('More info', 5, 39, 1),
+	('More info', 5, 39, 18),
+	('More info', 4, 40, 1),
+	('More info', 1, 40, 5),
+	('More info', 2, 40, 10);
 
 -- Dumping structure for table works.skill
 CREATE TABLE IF NOT EXISTS `skill` (
@@ -2383,9 +2527,9 @@ CREATE TABLE IF NOT EXISTS `skill` (
   `skill_name` varchar(255) DEFAULT NULL,
   `type` tinyint(4) DEFAULT NULL CHECK (`type` between 0 and 2),
   PRIMARY KEY (`skill_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table works.skill: ~16 rows (approximately)
+-- Dumping data for table works.skill: ~18 rows (approximately)
 INSERT INTO `skill` (`skill_id`, `skill_description`, `skill_name`, `type`) VALUES
 	(1, 'A programming language used for development of software.', 'Java', 1),
 	(2, 'A programming language used for development of software.', 'Python', 1),
@@ -2397,12 +2541,14 @@ INSERT INTO `skill` (`skill_id`, `skill_description`, `skill_name`, `type`) VALU
 	(8, 'A programming language used for development of software.', 'Swift', 1),
 	(9, 'A programming language used for development of software.', 'Kotlin', 1),
 	(10, 'A programming language used for development of software.', 'PHP', 1),
-	(11, '', 'Angular', 1),
-	(12, '', 'Nodejs', 1),
-	(13, '', 'React', 1),
-	(14, '', 'React-Native', 1),
-	(15, '', 'MongoDB', 1),
-	(16, '', 'SqlServer', 1);
+	(11, 'A programming language used for development of software.', 'Angular', 1),
+	(12, 'A programming language used for development of software.', 'Nodejs', 1),
+	(13, 'A programming language used for development of software.', 'React', 1),
+	(14, 'A programming language used for development of software.', 'React-Native', 1),
+	(15, 'A programming language used for development of software.', 'MongoDB', 1),
+	(16, 'A programming language used for development of software.', 'SqlServer', 1),
+	(17, 'A programming language used for development of software.', 'Reactjs', 1),
+	(18, 'A programming language used for development of software.', 'NoSQL', 0);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

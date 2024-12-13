@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `number` varchar(20) DEFAULT NULL,
   `zipcode` varchar(7) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1020 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1079 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Data exporting was unselected.
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `candidate` (
   UNIQUE KEY `UK_9i5yt1gvm0chg5e10qkns7tll` (`phone`),
   UNIQUE KEY `UK_m8qhlm4wu215gr34dhxp0dour` (`address`),
   CONSTRAINT `FKa8gnyyhbb2qnhp94grci1n0o9` FOREIGN KEY (`address`) REFERENCES `address` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1023 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1033 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Data exporting was unselected.
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `company` (
   PRIMARY KEY (`comp_id`),
   UNIQUE KEY `UK_rvp2hunsq4sgmpxe3a7i1ym3m` (`address`),
   CONSTRAINT `FKd5occp4cjwihejbxdbpvkp5tv` FOREIGN KEY (`address`) REFERENCES `address` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Data exporting was unselected.
 
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `experience` (
   PRIMARY KEY (`exp_id`),
   KEY `FK_Experience_Candidate` (`can_id`),
   CONSTRAINT `FK_Experience_Candidate` FOREIGN KEY (`can_id`) REFERENCES `candidate` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Data exporting was unselected.
 
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `job` (
   PRIMARY KEY (`job_id`),
   KEY `FKbaqlvluu78phmo9ld89um7wnm` (`company`),
   CONSTRAINT `FKbaqlvluu78phmo9ld89um7wnm` FOREIGN KEY (`company`) REFERENCES `company` (`comp_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Data exporting was unselected.
 
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `skill` (
   `skill_name` varchar(255) DEFAULT NULL,
   `type` tinyint(4) DEFAULT NULL CHECK (`type` between 0 and 2),
   PRIMARY KEY (`skill_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Data exporting was unselected.
 
